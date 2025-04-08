@@ -1,0 +1,7 @@
+{
+  "UniqueModName": "NBKRedSpy_MoreCombatInfo",
+  "Assemblies": [
+    "MoreCombatInfo.dll"
+  ],
+  "Dependencies": []
+}
