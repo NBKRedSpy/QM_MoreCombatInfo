@@ -1,11 +1,4 @@
-﻿using HarmonyLib;
-using MGSC;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MGSC;
 
 namespace MoreCombatInfo
 {
@@ -38,8 +31,10 @@ namespace MoreCombatInfo
         {
             //Game checks for seen.  Also want to see attacks on player from unseen.
             //  Otherwise only the first hit will be logged and not all the shots.
-            if(target is Player ||  attacker.IsSeenByPlayer || target.IsSeenByPlayer)
+            //Mono doesn't seem to like target?.IsSeenByPlayer.
+            if (target is Player ||  attacker.IsSeenByPlayer || ( target != null  && target.IsSeenByPlayer))
             {
+
                 //Set the name of the attacker from the shoot action.
                 Attacker.Current = GetAttackerName(attacker);
             }
@@ -53,10 +48,10 @@ namespace MoreCombatInfo
         {
             string uniqueId = creature is Player ? "" : " " + creature.CreatureData.UniqueId;
             CombatLogCreatureInfo result = CombatLogSystem.GetCreatureInfo(creature);
-            return 
-                "--- ".WrapInColor(Colors.LightRed) + 
-                $"{result.Localize()} {uniqueId}".WrapInColor(Colors.Green) + 
-                " ---".WrapInColor(Colors.LightRed);
+            return
+                "----------- ".WrapInColor(Colors.LightRed) +
+                $"{result.Localize()} {uniqueId}".WrapInColor(Colors.Green);
+                
         }
 
         public static void CreateHitLog(DamageHitInfo info, float accuracy, float baseDodge)
@@ -77,7 +72,6 @@ namespace MoreCombatInfo
 
             RoundNumber.Current = raidMetadata.TurnNumber;
 
-            //Always put down a new record when the round has changed.
             if (roundHasChanged || Attacker.Current != Attacker.Previous)
             {
                 Attacker.Previous = Attacker.Current;
@@ -96,13 +90,14 @@ namespace MoreCombatInfo
                     Message = Attacker.Current
                 };
 #endif
-
-
                 CombatLogSystem.AddEntry(raidMetadata, combatLog, attackerMessage);
 
             }
 
-            string message = $"{(info.wasMiss ? "Miss".WrapInColor(Colors.LightRed) : "Hit")} " +
+            string hitString = info.wasMiss ? "Miss".WrapInColor(Colors.LightRed) : "Hit";
+            hitString = "[".WrapInColor(Colors.Yellow) + hitString + "]".WrapInColor(Colors.Yellow);
+
+            string message = $"{hitString} " +
                 $"Acc {accuracy * 100:N0}% Roll: {LastHitRoll * 100:N0} " +
                 $"Dodge: {baseDodge * 100:N0}";
 
@@ -120,7 +115,6 @@ namespace MoreCombatInfo
                 Message = message
             };
 #endif
-
 
             CombatLogSystem.AddEntry(raidMetadata, combatLog, entry);
         }
