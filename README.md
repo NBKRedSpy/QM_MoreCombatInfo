@@ -35,3 +35,11 @@ Thanks!
 
 # Source Code
 Source code is available on GitHub at https://github.com/NBKRedSpy/QM_MoreCombatInfo
+
+# Change Log
+
+## 1.1.1
+* Fixed attacker header not showing or ordered late in some cases.
+* Added added brackets around hit and miss.
+* Added more dashes to attacker to find easier.
+* Fixed null reference error due to Mono not liking null forgiving operators in some cases.
