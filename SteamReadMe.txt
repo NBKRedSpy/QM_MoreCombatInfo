@@ -4,10 +4,6 @@
 Adds the hit percentages to the combat log.
 Note: The developers have hinted at the combat log having more information in the future, so this may be a short lived mod.
 
-[h1]Important[/h1]
-
-This version of the mod is only for the opt in beta version of the game!
-
 [h1]Docs[/h1]
 
 Example:  [i]Hit Acc 57% Roll: 51 Dodge: 3[/i]
