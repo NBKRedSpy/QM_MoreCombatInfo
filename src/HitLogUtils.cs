@@ -97,8 +97,12 @@ namespace MoreCombatInfo
             string hitString = info.wasMiss ? "Miss".WrapInColor(Colors.LightRed) : "Hit";
             hitString = "[".WrapInColor(Colors.Yellow) + hitString + "]".WrapInColor(Colors.Yellow);
 
+            //Invert the "accuracy" number so users get a familiar To Hit representation.
+            int toHit = (int)((1f - accuracy) * 100f);
+            int invertedRoll = (int)((1 - LastHitRoll) * 100);
+
             string message = $"{hitString} " +
-                $"Acc {accuracy * 100:N0}% Roll: {LastHitRoll * 100:N0} " +
+                $"To Hit: {toHit} Roll: {invertedRoll} " +
                 $"Dodge: {baseDodge * 100:N0}";
 
 #if true

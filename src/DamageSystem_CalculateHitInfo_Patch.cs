@@ -21,7 +21,7 @@ namespace MoreCombatInfo
             //  care about the very last part.
 
 
-            //The CalculateHitInfo method has the basic accuraccy and dodge calulcations.
+            //The CalculateHitInfo method has the basic accuracy and dodge calculations.
             //It creates a DamageHitInfo, which handles to hit calculations, including
             //the random number (roll) that was used for an attack.
 

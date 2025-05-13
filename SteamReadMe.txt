@@ -6,7 +6,7 @@ Note: The developers have hinted at the combat log having more information in th
 
 [h1]Docs[/h1]
 
-Example:  [i]Hit Acc 57% Roll: 51 Dodge: 3[/i]
+Example: [i][Hit] To Hit: 30 Roll: 55 Dodge: 10[/i]
 [table]
 [tr]
 [td]Item
@@ -21,21 +21,21 @@ Example:  [i]Hit Acc 57% Roll: 51 Dodge: 3[/i]
 [/td]
 [/tr]
 [tr]
-[td]Acc
+[td]To Hit
 [/td]
-[td]Accuracy.  This is the final accurracy adjusted by all bonsues and malauses.  Indicates the value to roll less than.
+[td]The value that the roll must be equal or higher to.
 [/td]
 [/tr]
 [tr]
 [td]Roll
 [/td]
-[td]The random roll for the to hit.  Must be [i]under[/i] the accuracy number.
+[td]The random roll for the to hit.  Must be at or over the To Hit value.
 [/td]
 [/tr]
 [tr]
 [td]Dodge
 [/td]
-[td]The target's dodge value.
+[td]The target's dodge value.  Informational
 [/td]
 [/tr]
 [/table]
@@ -52,10 +52,13 @@ The hit rolls only show if the projectile crossed a creature.  So if a shot goes
 The accuracy and roll numbers are displayed as whole numbers, but are actually decimals.  It is possible for the display to show the same number but still miss.  Ex:  51 vs 51 when in reality it is 51.1 vs 51.3
 
 [h1]Known Issues[/h1]
+[list]
+[*]The header which shows the attacker is not always updated and therefore incorrect.
+[*]The game's log (Player.log) will have localization errors / warnings.  This does not impact the game.
+[*]Some melee attacks are not registered.
+[/list]
 
-The game's log (Player.log) will have localization errors / warnings.  This does not impact the game.
-
-[h1]Support[/h1]
+[h1]Buy Me a Coffee[/h1]
 
 If you enjoy my mods and want to buy me a coffee, check out my [url=https://ko-fi.com/nbkredspy71915]Ko-Fi[/url] page.
 Thanks!
@@ -65,6 +68,12 @@ Thanks!
 Source code is available on GitHub at https://github.com/NBKRedSpy/QM_MoreCombatInfo
 
 [h1]Change Log[/h1]
+
+[h2]1.2.0[/h2]
+[list]
+[*]Changed log to be the more common To Hit and Roll format.  Effectively inverse of the game's internal rolls.
+[*]Overrode localization errors.  Unfortunately, this is global.
+[/list]
 
 [h2]1.1.1[/h2]
 [list]

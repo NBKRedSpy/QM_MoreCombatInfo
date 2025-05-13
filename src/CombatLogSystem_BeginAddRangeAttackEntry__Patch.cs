@@ -11,7 +11,7 @@ namespace MoreCombatInfo
 {
 
     [HarmonyPatch(typeof(MGSC.CombatLogSystem), nameof(MGSC.CombatLogSystem.BeginAddRangeAttackEntry))]
-    public static class CombatLogSystem_BeginAddRangeAttackEntry__Patch
+    public static class CombatLogSystem_BeginAddRangeAttackEntry_Patch
     {
         /// <summary>
         /// Get the combatants info for ranged attacks.
