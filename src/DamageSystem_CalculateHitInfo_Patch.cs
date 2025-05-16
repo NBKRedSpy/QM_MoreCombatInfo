@@ -63,6 +63,7 @@ namespace MoreCombatInfo
                         typeof(float),
                         typeof(float),
                         typeof(int),
+                        typeof(float),
                         typeof(bool),
                         typeof(bool),
                         typeof(float)
@@ -79,7 +80,7 @@ namespace MoreCombatInfo
                     //IL_00a3: ldloc.s 8
                     //IL_00a5: stfld float32 MGSC.DamageHitInfo::woundChance
                     Utils.MatchVariable(OpCodes.Ldloc_S, 8, typeof(float)),
-                    CodeMatch.StoresField(AccessTools.DeclaredField(typeof(MGSC.DamageHitInfo), nameof(MGSC.DamageHitInfo.woundChance)))
+                    CodeMatch.StoresField(AccessTools.DeclaredField(typeof(MGSC.DamageHitInfo), nameof(MGSC.DamageHitInfo.woundChanceBonus)))
                 )
                 .Advance(1)
                 .ThrowIfNotMatch("didn't find wound property set")
@@ -89,10 +90,6 @@ namespace MoreCombatInfo
                     new CodeInstruction(OpCodes.Ldarg_2),  //base Dodge.
                     CodeInstruction.Call(() => HitLogUtils.CreateHitLog(default, default, default))
                 )
-                .MatchEndForward(
-                    new CodeMatch(OpCodes.Ret)
-                )
-                .ThrowIfNotMatch("didn't find return")
                 .InstructionEnumeration()
                 .ToList();
 

@@ -19,9 +19,10 @@ namespace MoreCombatInfo
             typeof(float),
             typeof(float),
             typeof(int),
+            typeof(float),
             typeof(bool),
             typeof(bool),
-            typeof(float)
+            typeof(float), 
         })]
     public static class DamageHitInfo_Ctor_Patch
     {
