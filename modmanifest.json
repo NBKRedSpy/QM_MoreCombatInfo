@@ -1,7 +1,11 @@
 {
-  "UniqueModName": "NBKRedSpy_MoreCombatInfo",
+  "UniqueModName": "NBKRedSpy_MoreCombatInfo_beta",
   "Assemblies": [
     "MoreCombatInfo.dll"
   ],
-  "Dependencies": []
+"Dependencies": [],
+  "SteamTags": [
+    "0.9.1",
+    "Quality of Life"
+  ]
 }

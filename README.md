@@ -1,8 +1,12 @@
-# Quasimorph More Combat Info
+# Quasimorph More Combat Info - Beta Only!
 ![thumbnail icon](media/thumbnail.png)
 
 Adds the hit percentages to the combat log.
 Note: The developers have hinted at the combat log having more information in the future, so this may be a short lived mod.
+
+
+# Imporant!
+This is for the opt in 0.9.1 beta and does not work for the current release.  Use the version fo the mod without the beta suffix.
 
 # Docs
 
@@ -37,7 +41,8 @@ Thanks!
 Source code is available on GitHub at https://github.com/NBKRedSpy/QM_MoreCombatInfo
 
 # Change Log
-
+## 1.2.1
+* 0.9.1 Compatibility.
 ## 1.2.0
 * Changed log to be the more common To Hit and Roll format.  Effectively inverse of the game's internal rolls.
 * Overrode localization errors.  Unfortunately, this is global.
