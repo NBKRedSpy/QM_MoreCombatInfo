@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MoreCombatInfo
+namespace MoreCombatInfo.Patches
 {
     [HarmonyPatch(typeof(Player), nameof(Player.ProcessMeleeAttackOnEnemy))]
     [HarmonyPatch(typeof(Monster), nameof(Monster.ProcessMeleeAttackOnEnemy))]

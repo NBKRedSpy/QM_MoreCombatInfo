@@ -1,8 +1,13 @@
-[h1]Quasimorph More Combat Info[/h1]
 
+
+Adds the hit percentages to the combat log.  The mod can be configured to show the "inverted rolls" as older versions of this mod did.  See the Configuration section.
 
 Adds the hit percentages to the combat log.
 Note: The developers have hinted at the combat log having more information in the future, so this may be a short lived mod.
+
+[h1]Imporant![/h1]
+
+This is for the opt in 0.9.1 beta and does not work for the current release.  Use the version fo the mod without the beta suffix.
 
 [h1]Docs[/h1]
 
@@ -45,6 +50,28 @@ Example: [i][Hit] To Hit: 30 Roll: 55 Dodge: 10[/i]
 The start of an attack will have a '--- <attacker name> ---' header line.
 Turn number on left of the log uses alternate colors per turn for better visibility.
 
+[h1]Configuration[/h1]
+
+The configuration file will be created on the first game run and can be found at [i]%AppData%\..\LocalLow\Magnum Scriptum Ltd\Quasimorph_ModConfigs\MoreCombatInfo\config.json[/i].
+[table]
+[tr]
+[td]Name
+[/td]
+[td]Default
+[/td]
+[td]Description
+[/td]
+[/tr]
+[tr]
+[td]InvertToHit
+[/td]
+[td]true
+[/td]
+[td]If true, will change the roll for the To Hit to need to be over the target.  False is the To Hit roll display previous to version 1.2.0 of this mod
+[/td]
+[/tr]
+[/table]
+
 [h1]Notes[/h1]
 
 The hit rolls only show if the projectile crossed a creature.  So if a shot goes wide or hits a barrier, it will not show up in the combat log.
@@ -68,6 +95,10 @@ Thanks!
 Source code is available on GitHub at https://github.com/NBKRedSpy/QM_MoreCombatInfo
 
 [h1]Change Log[/h1]
+
+[h2]1.2.0.1[/h2]
+
+Added the 'InvertToHit' option.
 
 [h2]1.2.0[/h2]
 [list]

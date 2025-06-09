@@ -7,7 +7,7 @@ using HarmonyLib;
 using MGSC;
 using UnityEngine;
 
-namespace MoreCombatInfo
+namespace MoreCombatInfo.Patches
 {
     [HarmonyPatch(typeof(CombatLogView), nameof(CombatLogView.GetFormattedEntry))]  
     public static class CombatLogView_GetFormattedEntry_Patch

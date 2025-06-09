@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using HarmonyLib;
 using MGSC;
 
-namespace MoreCombatInfo
+namespace MoreCombatInfo.Patches
 {
     /// <summary>
     /// This patch is only required because the first ranged attack from an attacker
