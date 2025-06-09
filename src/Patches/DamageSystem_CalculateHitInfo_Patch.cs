@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using HarmonyLib;
 using MGSC;
 
-namespace MoreCombatInfo
+namespace MoreCombatInfo.Patches
 {
 
     [HarmonyPatch(typeof(DamageSystem), nameof(DamageSystem.CalculateHitInfo))]
@@ -55,11 +55,11 @@ namespace MoreCombatInfo
                     CodeMatch.LoadsArgument(false, "autoCrit"),
                     CodeMatch.LoadsArgument(false, "autoHit"),
                     CodeMatch.LoadsArgument(false, "critDamageBonus"),
-                    new CodeMatch(OpCodes.Newobj, AccessTools.Constructor(typeof(MGSC.DamageHitInfo), new Type[]
+                    new CodeMatch(OpCodes.Newobj, AccessTools.Constructor(typeof(DamageHitInfo), new Type[]
                     {
                         typeof(int),
                         typeof(float),
-                        typeof(MGSC.DmgInfo),
+                        typeof(DmgInfo),
                         typeof(float),
                         typeof(float),
                         typeof(int),
@@ -80,7 +80,7 @@ namespace MoreCombatInfo
                     //IL_00a3: ldloc.s 8
                     //IL_00a5: stfld float32 MGSC.DamageHitInfo::woundChance
                     Utils.MatchVariable(OpCodes.Ldloc_S, 8, typeof(float)),
-                    CodeMatch.StoresField(AccessTools.DeclaredField(typeof(MGSC.DamageHitInfo), nameof(MGSC.DamageHitInfo.woundChanceBonus)))
+                    CodeMatch.StoresField(AccessTools.DeclaredField(typeof(DamageHitInfo), nameof(DamageHitInfo.woundChanceBonus)))
                 )
                 .Advance(1)
                 .ThrowIfNotMatch("didn't find wound property set")

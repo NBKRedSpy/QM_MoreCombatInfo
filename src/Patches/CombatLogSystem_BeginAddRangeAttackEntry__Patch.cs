@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 using HarmonyLib;
 using MGSC;
 
-namespace MoreCombatInfo
+namespace MoreCombatInfo.Patches
 {
 
-    [HarmonyPatch(typeof(MGSC.CombatLogSystem), nameof(MGSC.CombatLogSystem.BeginAddRangeAttackEntry))]
+    [HarmonyPatch(typeof(CombatLogSystem), nameof(CombatLogSystem.BeginAddRangeAttackEntry))]
     public static class CombatLogSystem_BeginAddRangeAttackEntry_Patch
     {
         /// <summary>

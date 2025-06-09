@@ -15,9 +15,9 @@ namespace MoreCombatInfo
     {
 
         public static ConfigDirectories ConfigDirectories = new ConfigDirectories();
+        public static ModConfig Config { get; private set; }
 
         public static Logger Logger = new Logger();
-
 
         public static State State;
 
@@ -27,8 +27,10 @@ namespace MoreCombatInfo
         public static void AfterConfig(IModContext context)
         {
             State = context.State;
+            Directory.CreateDirectory(ConfigDirectories.ModPersistenceFolder);
+            Config = ModConfig.LoadConfig(ConfigDirectories.ConfigPath);
 
-
+            HitLogUtils.InvertToHit = Config.InvertToHit;
             Harmony harmony = new Harmony("NBKRedSpy_" + ConfigDirectories.ModAssemblyName);
             harmony.PatchAll();
         }

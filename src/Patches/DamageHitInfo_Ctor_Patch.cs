@@ -9,13 +9,13 @@ using HarmonyLib;
 using MGSC;
 using UnityEngine;
 
-namespace MoreCombatInfo
+namespace MoreCombatInfo.Patches
 {
     [HarmonyPatch(typeof(DamageHitInfo), MethodType.Constructor,
         new Type[] {
             typeof(int),
             typeof(float),
-            typeof(MGSC.DmgInfo),
+            typeof(DmgInfo),
             typeof(float),
             typeof(float),
             typeof(int),
@@ -38,7 +38,7 @@ namespace MoreCombatInfo
             List<CodeInstruction> result = new CodeMatcher(original)
                 .MatchStartForward(
                     new CodeMatch(OpCodes.Ldc_I4_1),
-                    new CodeMatch(OpCodes.Stfld, AccessTools.Field(typeof(MGSC.DamageHitInfo), nameof(MGSC.DamageHitInfo.wasCrit))),
+                    new CodeMatch(OpCodes.Stfld, AccessTools.Field(typeof(DamageHitInfo), nameof(DamageHitInfo.wasCrit))),
                     new CodeMatch(OpCodes.Ldarg_0),
                     new CodeMatch(OpCodes.Ldloc_2),
                     CodeMatch.LoadsArgument(false, "accuracy"),
