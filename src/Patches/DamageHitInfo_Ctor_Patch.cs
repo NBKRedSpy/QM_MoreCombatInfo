@@ -15,40 +15,57 @@ namespace MoreCombatInfo.Patches
         new Type[] {
             typeof(int),
             typeof(float),
-            typeof(MGSC.DmgInfo),
+            typeof(DmgInfo),
             typeof(float),
             typeof(float),
             typeof(int),
+            typeof(int),
+            typeof(float),
             typeof(bool),
             typeof(bool),
-            typeof(float)
+            typeof(float),
+            typeof(bool),
+
         })]
     public static class DamageHitInfo_Ctor_Patch
     {
+        /// <summary>
+        /// Handles the melee accuracy and hit roll only.  
+        /// While the range attack also calls this function (DamageHitInfo.ctor) to compute damage, it has its own roll logic.
+        /// </summary>
+        /// <returns></returns>
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             List<CodeInstruction> original = instructions.ToList();
-
 
             //The DamageHitInfo constructor has the roll used for the to hit check.
             //The DamageHitInfo object is created with the CalculateHitInfo function, 
             //  so the LastHitRoll is set so it is available upon return.
 
+            //Simplified.  Store last roll after it is generated.
+
+            //Target match:
+            //IL_005d: ldc.r4 0.0
+            //IL_0062: ldc.r4 1
+            //IL_0067: call float32 [UnityEngine.CoreModule]UnityEngine.Random::Range(float32, float32)
+            //IL_006c: stloc.2
+
+
             List<CodeInstruction> result = new CodeMatcher(original)
-                .MatchStartForward(
-                    new CodeMatch(OpCodes.Ldc_I4_1),
-                    new CodeMatch(OpCodes.Stfld, AccessTools.Field(typeof(MGSC.DamageHitInfo), nameof(MGSC.DamageHitInfo.wasCrit))),
-                    new CodeMatch(OpCodes.Ldarg_0),
-                    new CodeMatch(OpCodes.Ldloc_2),
-                    CodeMatch.LoadsArgument(false, "accuracy"),
-                    new CodeMatch(OpCodes.Ble_Un_S)
+                .MatchEndForward(
+                    new CodeMatch(OpCodes.Ldc_R4, 0f),
+                    new CodeMatch(OpCodes.Ldc_R4, 1f),
+                    CodeMatch.Calls(() => UnityEngine.Random.Range(0f, 0f)),
+                    new CodeMatch(OpCodes.Stloc_2)      //This is what finds the second 0,0 random, which is the attack roll.
                 )
-                .ThrowIfNotMatch("Did not find the wasCrit section.")
-                //This could be anywhere after the roll occurs, but like the match above.
-                .Advance(-1)
+                .ThrowIfNotMatch("Did not find the to hit roll.")
+                .Advance(1)
                 .Insert(
+                    //Get the needed values.  Loading the accuraccy and autoHit since this is an easy place to get it.
                     CodeInstruction.LoadLocal(2),  //Load the roll
-                    CodeInstruction.StoreField(typeof(HitLogUtils), nameof(HitLogUtils.LastHitRoll))
+                    CodeInstruction.LoadArgument(4), //Load the accuracy argument
+                    CodeInstruction.LoadArgument(10), //Load autoHit argument
+                    CodeInstruction.Call(() => HitLogUtils.SetHitRoll(default, default, default))
                 )
                 .InstructionEnumeration()
                 .ToList();

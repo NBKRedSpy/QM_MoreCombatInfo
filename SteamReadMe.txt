@@ -1,13 +1,7 @@
+[h1]Quasimorph More Combat Info[/h1]
 
 
 Adds the hit percentages to the combat log.  The mod can be configured to show the "inverted rolls" as older versions of this mod did.  See the Configuration section.
-
-Adds the hit percentages to the combat log.
-Note: The developers have hinted at the combat log having more information in the future, so this may be a short lived mod.
-
-[h1]Imporant![/h1]
-
-This is for the opt in 0.9.1 beta and does not work for the current release.  Use the version fo the mod without the beta suffix.
 
 [h1]Docs[/h1]
 
@@ -96,9 +90,24 @@ Source code is available on GitHub at https://github.com/NBKRedSpy/QM_MoreCombat
 
 [h1]Change Log[/h1]
 
-[h2]1.2.0.1[/h2]
+[h2]1.3.0[/h2]
+[list]
+[*]Rewrite for 0.9.5 compatibility.
+[/list]
+
+[h2]1.2.3[/h2]
+[list]
+[*]0.9.2 Compatibility
+[/list]
+
+[h2]1.2.2[/h2]
 
 Added the 'InvertToHit' option.
+
+[h2]1.2.1[/h2]
+[list]
+[*]0.9.1 Compatibility.
+[/list]
 
 [h2]1.2.0[/h2]
 [list]

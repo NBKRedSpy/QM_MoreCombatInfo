@@ -3,12 +3,16 @@ using System;
 
 namespace MoreCombatInfo
 {
-    public static class HitLogUtils
+    internal static class HitLogUtils
     {
+
         /// <summary>
-        /// The last random roll
+        /// A special prefix used to bypass localization attempts.  This prevents this mod's log entries from 
+        /// having warnings added to the Player.log.
         /// </summary>
-        public static float LastHitRoll = 0f;
+        public const string MessagePrefix = "_+_ ";
+
+        public static AttackData AttackData { get; set; } = new AttackData();
 
 
         /// <summary>
@@ -21,12 +25,17 @@ namespace MoreCombatInfo
         /// </summary>
         public static HistoricalInfo<string> Attacker = new HistoricalInfo<string>();
 
-
-
         /// <summary>
         /// The current and previous round number.  Used to put down a new attacker header.
         /// </summary>
         public static HistoricalInfo<int> RoundNumber = new HistoricalInfo<int>();
+
+        public static void SetHitRoll(float hitRoll, float accuracy, bool autoHit)
+        {
+            AttackData.HitRoll = hitRoll;
+            AttackData.Accuracy = accuracy;
+            AttackData.IsAutoHit = autoHit;
+        }
 
         /// <summary>
         /// Sets the name of the current attacker for the hit log system.
@@ -34,7 +43,8 @@ namespace MoreCombatInfo
         /// This is how the game handles it.
         /// </summary>
         /// <param name="attacker"></param>
-        public static void SetCombatants(Creature attacker, Creature target)
+        /// <returns>Returns true if the player can see the combatants.</returns>
+        private static bool SetCombatants(Creature attacker, Creature target)
         {
             //Game checks for seen.  Also want to see attacks on player from unseen.
             //  Otherwise only the first hit will be logged and not all the shots.
@@ -49,6 +59,8 @@ namespace MoreCombatInfo
             {
                 Attacker.Current = null;
             }
+
+            return Attacker.Current != null;
         }
 
         private static string GetAttackerName(Creature creature)
@@ -61,19 +73,36 @@ namespace MoreCombatInfo
                 
         }
 
-        public static void CreateHitLog(DamageHitInfo info, float accuracy, float baseDodge)
+        /// <summary>
+        /// Creates the hit log
+        /// </summary>
+        /// <param name="attackData"></param>
+        /// <param name="entry">Optional.  A previously added "holder" message to be overwritten with the log info.  
+        /// Otherwise a new entry will be created</param>
+        public static void CreateHitLog(AttackData attackData, MessageLogEntry entry = null)
         {
-            //Unfortunately, the info.damageDealer?.name is always set after a call to the game's CalculateHitInfo
+            if (!SetCombatants(attackData.Attacker, attackData.Target)) return;
+            HitLogUtils.CreateAttackerHeader(attackData.Attacker, AttackData.Target);
+
+            CreateHitLog(attackData.Accuracy, attackData.HitRoll, attackData.Dodge, attackData.IsAutoHit, attackData.WasMiss, entry);
+        }
+
+
+        /// <summary>
+        /// Creates the header in the combat log for the attacker name.
+        /// This returns false if the player cannot see the attacker or target.
+        /// </summary>
+        /// <param name="attacker"></param>
+        /// <param name="target"></param>
+        /// <returns>Returns false if the player cannot see the attacker or the target</returns>
+        public static bool CreateAttackerHeader(Creature attacker, Creature target)
+        {
+            bool canSee = SetCombatants(attacker, target);
+
+            if (!canSee) return false;
 
             RaidMetadata raidMetadata = Plugin.State.Get<RaidMetadata>();
             CombatLog combatLog = Plugin.State.Get<CombatLog>();
-
-            if(Attacker.Current == null)
-            {
-                //Will only be if both combatants cannot be seen.
-                Attacker.Previous = Attacker.Current;
-                return;
-            }
 
             bool roundHasChanged = raidMetadata.TurnNumber != RoundNumber.Current;
 
@@ -84,50 +113,85 @@ namespace MoreCombatInfo
                 Attacker.Previous = Attacker.Current;
 
                 //TEMP: The future version of the game will allow restoring user types from saves.
-#if true
                 MessageLogEntry attackerMessage = new MessageLogEntry()
                 {
                     Color = Colors.LightRed,
-                    MessageTag = Attacker.Current
+                    MessageTag = $"{MessagePrefix}{Attacker.Current}"
                 };
-#else
-                NoLocalizationMessage attackerMessage = new NoLocalizationMessage()
-                {
-                    Color = Colors.LightRed,
-                    Message = Attacker.Current
-                };
-#endif
                 CombatLogSystem.AddEntry(raidMetadata, combatLog, attackerMessage);
-
             }
 
-            string hitString = info.wasMiss ? "Miss".WrapInColor(Colors.LightRed) : "Hit";
+            return true;
+        }
+
+        /// <summary>
+        /// Creates an empty message log entry and adds it to the combat log.
+        /// This allows the entry to be filled in with data at a later point.
+        /// </summary>
+        /// <returns></returns>
+        public static MessageLogEntry PreCreateMessageLogEntry()
+        {
+
+            RaidMetadata raidMetadata = Plugin.State.Get<RaidMetadata>();
+            CombatLog combatLog = Plugin.State.Get<CombatLog>();
+
+            MessageLogEntry entry = new MessageLogEntry()
+            {
+                Color = Colors.Yellow,
+                MessageTag = $"{MessagePrefix}temporary"
+            };
+
+            CombatLogSystem.AddEntry(raidMetadata, combatLog, entry);
+
+            return entry;
+        }
+
+        /// <summary>
+        /// Creates a formatted hit log.  If the entry parameter is set, that object's data will be filled in with
+        /// the message info.
+        /// </summary>
+        /// <param name="accuracy"></param>
+        /// <param name="hitRoll"></param>
+        /// <param name="baseDodge"></param>
+        /// <param name="isAutoHit"></param>
+        /// <param name="wasMiss"></param>
+        /// <param name="entry"></param>
+        private static void CreateHitLog(float accuracy, float hitRoll, float baseDodge, bool isAutoHit, bool wasMiss, 
+            MessageLogEntry entry = null)
+        {
+
+            RaidMetadata raidMetadata = Plugin.State.Get<RaidMetadata>();
+            CombatLog combatLog = Plugin.State.Get<CombatLog>();
+
+            bool roundHasChanged = raidMetadata.TurnNumber != RoundNumber.Current;
+            RoundNumber.Current = raidMetadata.TurnNumber;
+
+            string hitString = wasMiss ? "Miss".WrapInColor(Colors.LightRed) : "Hit";
             hitString = "[".WrapInColor(Colors.Yellow) + hitString + "]".WrapInColor(Colors.Yellow);
 
             //Invert the "accuracy" number so users get a familiar To Hit representation.
             int toHit = (int)((InvertToHitValue(accuracy)) * 100f);
-            int invertedRoll = (int)((InvertToHitValue(LastHitRoll)) * 100);
+            int invertedRoll = (int)((InvertToHitValue(hitRoll)) * 100);
 
             string message = $"{hitString} " +
                 $"To Hit: {toHit} Roll: {invertedRoll} " +
                 $"Dodge: {baseDodge * 100:N0}";
 
-#if true
+            bool addNewEntry = false;
 
-            MessageLogEntry entry = new MessageLogEntry()
+            if(entry == null)
             {
-                Color = Colors.Yellow,
-                MessageTag = message
-            };
-#else
-            NoLocalizationMessage entry = new NoLocalizationMessage()
-            {
-                Color = Colors.LightRed,
-                Message = message
-            };
-#endif
+                entry = new MessageLogEntry();
+                addNewEntry = true;
+            }
 
-            CombatLogSystem.AddEntry(raidMetadata, combatLog, entry);
+            entry.Color = Colors.Yellow;
+            entry.MessageTag = $"{MessagePrefix}{message}";
+
+            if (addNewEntry)
+            {
+                CombatLogSystem.AddEntry(raidMetadata, combatLog, entry);
+            }
         }
 
         private static float InvertToHitValue(float value)
