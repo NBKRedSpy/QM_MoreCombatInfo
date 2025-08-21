@@ -74,14 +74,13 @@ The accuracy and roll numbers are displayed as whole numbers, but are actually d
 
 [h1]Known Issues[/h1]
 [list]
-[*]The header which shows the attacker is not always updated and therefore incorrect.
-[*]The game's log (Player.log) will have localization errors / warnings.  This does not impact the game.
-[*]Some melee attacks are not registered.
+[*]When an attack has multiple rolls, all the rolls will be first, and then any damage will follow.
 [/list]
 
-[h1]Buy Me a Coffee[/h1]
+[h1]Support Development[/h1]
 
 If you enjoy my mods and want to buy me a coffee, check out my [url=https://ko-fi.com/nbkredspy71915]Ko-Fi[/url] page.
+
 Thanks!
 
 [h1]Source Code[/h1]

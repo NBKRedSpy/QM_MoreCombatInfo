@@ -31,12 +31,11 @@ The hit rolls only show if the projectile crossed a creature.  So if a shot goes
 The accuracy and roll numbers are displayed as whole numbers, but are actually decimals.  It is possible for the display to show the same number but still miss.  Ex:  51 vs 51 when in reality it is 51.1 vs 51.3
 
 # Known Issues
-* The header which shows the attacker is not always updated and therefore incorrect.
-* The game's log (Player.log) will have localization errors / warnings.  This does not impact the game.
-* Some melee attacks are not registered.
+* When an attack has multiple rolls, all the rolls will be first, and then any damage will follow. 
 
-# Buy Me a Coffee
+# Support Development
 If you enjoy my mods and want to buy me a coffee, check out my [Ko-Fi](https://ko-fi.com/nbkredspy71915) page.
+
 Thanks!
 
 # Source Code
