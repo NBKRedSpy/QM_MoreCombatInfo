@@ -46,6 +46,8 @@ Turn number on left of the log uses alternate colors per turn for better visibil
 
 [h1]Configuration[/h1]
 
+This mod supports the Mod Configuration Manager.  The settings can be changed in the Mods menu or directly in the config file.
+
 The configuration file will be created on the first game run and can be found at [i]%AppData%\..\LocalLow\Magnum Scriptum Ltd\Quasimorph_ModConfigs\MoreCombatInfo\config.json[/i].
 [table]
 [tr]
@@ -80,14 +82,23 @@ The accuracy and roll numbers are displayed as whole numbers, but are actually d
 [h1]Support Development[/h1]
 
 If you enjoy my mods and want to buy me a coffee, check out my [url=https://ko-fi.com/nbkredspy71915]Ko-Fi[/url] page.
-
 Thanks!
+
+[h1]Credits[/h1]
+[list]
+[*]Special thanks to Crynano for his excellent Mod Configuration Menu.
+[/list]
 
 [h1]Source Code[/h1]
 
 Source code is available on GitHub at https://github.com/NBKRedSpy/QM_MoreCombatInfo
 
 [h1]Change Log[/h1]
+
+[h2]1.4.0[/h2]
+[list]
+[*]MCM Integration
+[/list]
 
 [h2]1.3.0[/h2]
 [list]

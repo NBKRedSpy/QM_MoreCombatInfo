@@ -161,7 +161,7 @@ namespace MoreCombatInfo.Patches
             }
             catch (Exception ex)
             {
-                Plugin.Logger.LogException(ex);
+                Plugin.Logger.LogError(ex);
             }
 
 

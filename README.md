@@ -19,6 +19,8 @@ The start of an attack will have a '--- \<attacker name\> ---' header line.
 Turn number on left of the log uses alternate colors per turn for better visibility.
 
 # Configuration
+This mod supports the Mod Configuration Manager.  The settings can be changed in the Mods menu or directly in the config file.
+
 The configuration file will be created on the first game run and can be found at `%AppData%\..\LocalLow\Magnum Scriptum Ltd\Quasimorph_ModConfigs\MoreCombatInfo\config.json`.
 
 |Name|Default|Description|
@@ -35,13 +37,18 @@ The accuracy and roll numbers are displayed as whole numbers, but are actually d
 
 # Support Development
 If you enjoy my mods and want to buy me a coffee, check out my [Ko-Fi](https://ko-fi.com/nbkredspy71915) page.
-
 Thanks!
+
+# Credits
+* Special thanks to Crynano for his excellent Mod Configuration Menu. 
 
 # Source Code
 Source code is available on GitHub at https://github.com/NBKRedSpy/QM_MoreCombatInfo
 
 # Change Log
+## 1.4.0
+* MCM Integration
+
 ## 1.3.0
 * Rewrite for 0.9.5 compatibility.
 

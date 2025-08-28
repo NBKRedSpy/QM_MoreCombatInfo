@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using MGSC;
+using MoreCombatInfo.Mcm;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,6 +23,8 @@ namespace MoreCombatInfo
         public static State State;
 
 
+        private static McmConfiguration McmConfiguration;
+
 
         [Hook(ModHookType.AfterConfigsLoaded)]
         public static void AfterConfig(IModContext context)
@@ -30,9 +33,19 @@ namespace MoreCombatInfo
             Directory.CreateDirectory(ConfigDirectories.ModPersistenceFolder);
             Config = ModConfig.LoadConfig(ConfigDirectories.ConfigPath);
 
-            HitLogUtils.InvertToHit = Config.InvertToHit;
+            McmConfiguration = new McmConfiguration(Config, Plugin.Logger);
+            McmConfiguration.TryConfigure();
+
+            UpdatePatchSettings();
+
             Harmony harmony = new Harmony("NBKRedSpy_" + ConfigDirectories.ModAssemblyName);
             harmony.PatchAll();
+        }
+
+        public static void UpdatePatchSettings()
+        {
+            HitLogUtils.InvertToHit = Config.InvertToHit;
+
         }
 
 

@@ -15,7 +15,6 @@ namespace MoreCombatInfo
     /// </summary>
     public class Logger
     {
-
         /// <summary>
         /// The identifier to include at the start of every line.
         /// If not set, defaults to this assembly's name.
@@ -34,23 +33,30 @@ namespace MoreCombatInfo
 
         public void Log(string message)
         {
-            Debug.Log($"[{LogPrefix}]{message}");
+            Debug.Log($"[{LogPrefix}] {message}");
         }
 
         public void LogWarning(string message)
         {
-            Debug.LogWarning($"[{LogPrefix}] [WARN] {message}");
+            Debug.LogWarning($"[{LogPrefix}] {message}");
         }
 
         public void LogError(string message)
         {
-            Debug.LogError($"[{LogPrefix}] [ERR] {message}");
+            Debug.LogError($"[{LogPrefix}] {message}");
         }
 
-        public void LogException(Exception ex)
+        public void LogError(Exception ex)
         {
-            Debug.LogError($"[{LogPrefix}] [ERR] Exception Logged:");
+            Debug.LogError($"[{LogPrefix}] Exception Logged:");
             Debug.LogException(ex);
         }
+
+        public void LogError(Exception ex, string message)
+        {
+            Debug.LogError($"[{LogPrefix}] {message}:");
+            Debug.LogException(ex);
+        }
+
     }
 }
