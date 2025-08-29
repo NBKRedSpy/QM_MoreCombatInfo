@@ -4,10 +4,10 @@ using System.Collections.Generic;
 
 namespace MoreCombatInfo.Mcm
 {
-    internal class McmConfiguration : McmConfigurationBase<ModConfig>
+    internal class McmConfiguration : McmConfigurationBase
     {
 
-        public McmConfiguration(ModConfig config, Logger logger) : base (config, logger) { }
+        public McmConfiguration(ModConfig config, Logger logger) : base(config, logger) { }
 
         public override void Configure()
         {
