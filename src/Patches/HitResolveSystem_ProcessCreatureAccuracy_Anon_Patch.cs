@@ -1,6 +1,7 @@
 ﻿using AsmResolver.DotNet.Code.Cil;
 using HarmonyLib;
 using MGSC;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,7 +43,7 @@ namespace MoreCombatInfo.Patches
         public static void SetRolls(float roll, float accuracy)
         {
             Roll = roll;
-            Accuracy = accuracy;    
+            Accuracy = accuracy;
         }
 
 
@@ -54,63 +55,34 @@ namespace MoreCombatInfo.Patches
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
 
-            //Goal:  Find the roll and accuracy values in the anonymous function and call the local SetRolls function.
-            //float num = Mathf.Clamp(reference.Accuracy - hitEvent.TargetDodge, Data.Global.MinHitChance, Data.Global.CapAccuracy);
-            //float num2 = Random.Range(0f, 1f);
-
-            //IL is:
-            //	IL_00c6: call float32 [UnityEngine.CoreModule]UnityEngine.Mathf::Clamp(float32, float32, float32)
-            //	IL_00cb: stloc.3
-            //	// 	float num2 = Random.Range(0f, 1f);
-            //	IL_00cc: ldc.r4 0.0
-            //	IL_00d1: ldc.r4 1
-            //	IL_00d6: call float32 [UnityEngine.CoreModule]UnityEngine.Random::Range(float32, float32)
-            //	IL_00db: stloc.s 4
-
-
             List<CodeInstruction> original = instructions.ToList();
 
             //Utils.LogIL(original, @"C:/work/s.il");
 
             List<CodeInstruction> result = new CodeMatcher(original)
-                //	IL_00c6: call float32 [UnityEngine.CoreModule]UnityEngine.Mathf::Clamp(float32, float32, float32)
-                //	IL_00cb: stloc.3
-                //	// 	float num2 = Random.Range(0f, 1f);
-                //	IL_00cc: ldc.r4 0.0
-                //	IL_00d1: ldc.r4 1
-                //	IL_00d6: call float32 [UnityEngine.CoreModule]UnityEngine.Random::Range(float32, float32)
-                //	IL_00db: stloc.s 4
-
-                //.Advance(1) //Start at the beginning of the method.
-                            //.ThrowIfNotMatchForward(
-                            //    "Did not find accuracy and roll computation block",
-                            //    CodeMatch.Calls(() => Mathf.Clamp(0f,0f, 0f)),
-                            //    new CodeMatch(OpCodes.Stloc_S, 3), //This is the local variable for the accuracy.
-                            //    new CodeMatch(OpCodes.Ldc_R4, 0f), //This is the first argument to the Random.Range call.
-                            //    new CodeMatch(OpCodes.Ldc_R4, 1f), //This is the second argument to the Random.Range call.
-                            //    CodeMatch.Calls(() => Random.Range(0f, 1f)),
-                            //    new CodeMatch(OpCodes.Stloc_S, 4) //This is the local variable for the roll.
-                            //)
-
-
+                //  hitEvent.WasMiss = num2 > num;
+                //  IL_00f4: ldarg.2
+                //  IL_00f5: ldloc.s 5
+                //  IL_00f7: ldloc.s 4
+                //  IL_00f9: cgt
+                //  IL_00fb: stfld bool MGSC.HitEvent::WasMiss
+                //// Creature creature2 = _cacheCreatures.GetCreature(hitEvent.OwnerUid);
+                //  IL_0100: ldsfld class MGSC.Creatures MGSC.HitResolveSystem::_cacheCreatures
                 .MatchEndForward(
-                    CodeMatch.Calls(() => Mathf.Clamp(0f,0f,0f)),
-                    new CodeMatch(OpCodes.Stloc_3), //This is the local variable for the accuracy.
-                    new CodeMatch(OpCodes.Ldc_R4), //This is the first argument to the Random.Range call.
-                    new CodeMatch(OpCodes.Ldc_R4), //This is the second argument to the Random.Range call.
-                    CodeMatch.Calls(() => Random.Range(0f,0f)),
-                    //new CodeMatch(OpCodes.Call),
-                    new CodeMatch(OpCodes.Stloc_S) //This is the local variable for the roll.
+                    new CodeMatch(OpCodes.Ldarg_2),
+                    new CodeMatch(OpCodes.Ldloc_S), // num2
+                    new CodeMatch(OpCodes.Ldloc_S), // num
+                    new CodeMatch(OpCodes.Cgt),
+                    new CodeMatch(OpCodes.Stfld, AccessTools.Field(typeof(HitEvent), "WasMiss")),
+                    new CodeMatch(OpCodes.Ldsfld, AccessTools.Field(typeof(HitResolveSystem), "_cacheCreatures"))
                 )
-                .ThrowIfNotMatch("Did not find accuracy and roll computation block")
-                .Advance(1) //Advance past the stloc_s 4 instruction.
+                .ThrowIfNotMatch("Did not find miss evaluation block (WasMiss assignment).")
+                // Insert before ldsfld _cacheCreatures: SetRolls(num2, num)
                 .InsertAndAdvance(
-                    new CodeInstruction(OpCodes.Ldloc_S, 4), //Load the roll value.
-                    new CodeInstruction(OpCodes.Ldloc_S, 3), //Load the accuracy value.
-                    CodeInstruction.Call (() => SetRolls(0f, 0f)) //Call the SetRolls method with the roll and accuracy values.
+                    new CodeInstruction(OpCodes.Ldloc_S, 5), // roll = num2
+                    new CodeInstruction(OpCodes.Ldloc_S, 4), // accuracy = num
+                    CodeInstruction.Call(() => SetRolls(0f, 0f))
                 )
-
-                //Store the accuracy and roll values in the local variables.
                 .InstructionEnumeration()
                 .ToList();
 
@@ -139,7 +111,7 @@ namespace MoreCombatInfo.Patches
 
             try
             {
-                
+
                 if (!HitResolveSystem._cacheEntities.IsAlive(hitEvent.ProjEntityId)) return;
 
 
@@ -147,7 +119,7 @@ namespace MoreCombatInfo.Patches
                 AttackData data = new AttackData();
 
                 ref CollisionWithCreature collision = ref HitResolveSystem._cacheEntities.GetRef<CollisionWithCreature>(entity);
-                data.Target =  HitResolveSystem._cacheCreatures.GetCreature(collision.CreatureUid);
+                data.Target = HitResolveSystem._cacheCreatures.GetCreature(collision.CreatureUid);
                 data.Attacker = HitResolveSystem._cacheCreatures.GetCreature(hitEvent.OwnerUid);
 
                 data.WasMiss = hitEvent.WasMiss;

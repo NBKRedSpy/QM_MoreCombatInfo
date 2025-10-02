@@ -57,7 +57,11 @@ namespace MoreCombatInfo.Patches
             attackData.Attacker =  creature;
             attackData.Target = enemy;
             attackData.WasMiss = dmgHit.wasMiss;
-            attackData.Dodge = enemy?.CreatureData.GetDodge() ?? 0f;    //COPY: Same invoke as what MGSC.DamageSystem.CalculateHitInfo does to get the dodge value.
+
+            //Note - GetDodge() is the base dodge and doesn't include difficulty.
+            //  DamageSystem.GetProgressionDodge is more accurate, but not worth the time.  ToHit is based on the adjusted dodge,
+            //  so this is more for information purposes only.
+            attackData.Dodge = enemy?.CreatureData.GetDodge() ?? 0f;    
 
             CombatLog combatLog = Plugin.State.Get<CombatLog>();
 

@@ -95,6 +95,10 @@ Source code is available on GitHub at https://github.com/NBKRedSpy/QM_MoreCombat
 
 [h1]Change Log[/h1]
 
+[h2]1.5.0[/h2]
+
+Multi version support
+
 [h2]1.4.1[/h2]
 [list]
 [*]Fix for MCM not being bypassed due to Mono specific bug.
