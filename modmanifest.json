@@ -1,0 +1,9 @@
+{
+  "UniqueModName": "NBKRedSpy_MoreCombatInfo",
+  "Assemblies": [
+    "MoreCombatInfo_Bootstrap.dll"
+  ],
+  "Dependencies": [],
+  "SteamTags": [
+  ]
+}
