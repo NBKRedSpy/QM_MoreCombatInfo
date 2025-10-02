@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using MGSC;
 using MoreCombatInfo.Mcm;
+using MoreCombatInfo_Bootstrap;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,7 +13,7 @@ using UnityEngine;
 
 namespace MoreCombatInfo
 {
-    public static class Plugin
+    public class Plugin : BootstrapMod
     {
 
         public static ConfigDirectories ConfigDirectories = new ConfigDirectories();
@@ -26,8 +27,13 @@ namespace MoreCombatInfo
         private static McmConfiguration McmConfiguration;
 
 
-        [Hook(ModHookType.AfterConfigsLoaded)]
-        public static void AfterConfig(IModContext context)
+        public Plugin(HookEvents hookEvents, bool isBeta) : base(hookEvents, isBeta)
+        {
+            hookEvents.AfterConfigsLoaded += AfterConfig;
+        }
+
+        //[Hook(ModHookType.AfterConfigsLoaded)]
+        public void AfterConfig(IModContext context)
         {
             State = context.State;
             Directory.CreateDirectory(ConfigDirectories.ModPersistenceFolder);
