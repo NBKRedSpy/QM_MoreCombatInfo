@@ -17,7 +17,7 @@ namespace MoreCombatInfo_Bootstrap
     {
 
         public static Logger Log = new Logger();
-        public static HookEvents HookEvents { get; set; }
+        public static HookEvents HookEvents { get; set; } = new HookEvents();
         public static BootstrapMod BootstrapMod { get; set; }
 
         [Hook(ModHookType.BeforeBootstrap)]
@@ -81,23 +81,17 @@ namespace MoreCombatInfo_Bootstrap
 
         private static Version GetNumericVersion(string versionString)
         {
-            // Use regex to extract only numeric parts separated by dots
-            var numericParts = Regex.Matches(versionString, @"\d+")
-                .Cast<Match>()
-                .Select(m => m.Value)
+            // Only take the numeric parts as build and store version are store specific.
+
+            List<string> numericParts =
+                versionString.Split('.')
+                .TakeWhile(x => Regex.IsMatch(x, @"^\d+$"))
                 .ToList();
 
-            // Pad with zeros if less than 4 parts (Version requires at least major, minor)
-            while (numericParts.Count < 2)
-                numericParts.Add("0");
+            // Pad with zeros if less than 2 parts (Version requires at least major, minor)
+            while (numericParts.Count < 2) numericParts.Add("0");
 
-            // Build version string
-            string numericVersion = string.Join(".", numericParts);
-
-            // If more than 4 parts, only take first 4
-            var split = numericVersion.Split('.');
-            if (split.Length > 4)
-                numericVersion = string.Join(".", split.Take(4));
+            string numericVersion = string.Join(".", numericParts.Take(4).ToArray()); // Version supports up to 4 parts
 
             return new Version(numericVersion);
         }
