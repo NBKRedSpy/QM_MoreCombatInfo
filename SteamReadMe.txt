@@ -95,10 +95,9 @@ Source code is available on GitHub at https://github.com/NBKRedSpy/QM_MoreCombat
 
 [h1]Change Log[/h1]
 
-[h2]1.4.2[/h2]
-[list]
-[*]Multi version support
-[/list]
+[h2]1.5.0[/h2]
+
+Multi version support
 
 [h2]1.4.1[/h2]
 [list]

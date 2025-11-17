@@ -22,13 +22,11 @@
 		<PackageFolder>$(ProjectDir)../package/</PackageFolder>
 		<MCM_PATH>$(GAME_PATH)\..\..\workshop\content\2059170\3469678797\MCM.dll</MCM_PATH>
 	</PropertyGroup>
-
 	<PropertyGroup>
 		<!-- Comment this first line out to use the actual version.-->
 		<Assembly-CSharpPath Condition="Exists('lib-stripped\Assembly-CSharp-publicized.dll')">lib-stripped/Assembly-CSharp-publicized.dll</Assembly-CSharpPath>
 		<Assembly-CSharpPath Condition="!Exists('lib-stripped\Assembly-CSharp-publicized.dll')">$(ManagedPath)Assembly-CSharp.dll</Assembly-CSharpPath>
 	</PropertyGroup>
-
 	<ItemGroup>
 		<Reference Include="MCM">
 			<HintPath Condition="Exists($(MCM_PATH))">$(MCM_PATH)</HintPath>
@@ -64,14 +62,14 @@
 		<PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" ExcludeAssets="runtime" />
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\..\bootstrap\src\MoreCombatInfo_Bootstrap.csproj" />
+	  <ProjectReference Include="..\..\bootstrap\src\MoreCombatInfo_Bootstrap.csproj" />
 	</ItemGroup>
-
-	<Target Name="NoSteamIdMessage" Condition="'$(SteamId)'==''" AfterTargets="PostBuildEvent">
-		<Message Importance="high" Text="The SteamId is not set in the project.  Aborting Steam Workshop folder deployment." />
-	</Target>
-
+	<PropertyGroup>
+		<AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
+		<PackageFolder>$(ProjectDir)../package/</PackageFolder>
+	</PropertyGroup>
 	<Target Name="SteamWorkshopDeploy" Condition="'$(SteamId)'!=''" AfterTargets="PostBuildEvent">
+
 		<PropertyGroup>
 			<VersionWorkshopPath Condition="$(ProjectDir.Contains('beta'))">$(WorkshopPath)beta</VersionWorkshopPath>
 			<VersionWorkshopPath Condition="$(VersionWorkshopPath)==''">$(WorkshopPath)stable</VersionWorkshopPath>
@@ -82,10 +80,10 @@
 			<BuildSource Include="$(TargetDir)/*.*" Exclude="$(TargetDir)/*bootstrap.*" />
 			<!-- Exclude workaround for build ignorning private assets for Project References-->
 		</ItemGroup>
+		
 		<Message Importance="high" Text="ProjectDir folder -&gt; $(ProjectDir)" />
 		<Message Importance="high" Text="Workshop folder: $(VersionWorkshopPath)" />
 		<MakeDir Directories="$(VersionWorkshopPath)" ContinueOnError="true" />
-
 		<Copy SourceFiles="@(BuildSource)" DestinationFolder="$(VersionWorkshopPath)" />
 		<Delete Files="$(VersionWorkshopPath)/*bootstrap.dll" />
 	</Target>
