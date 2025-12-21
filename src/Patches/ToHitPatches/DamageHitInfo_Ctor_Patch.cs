@@ -9,7 +9,7 @@ using HarmonyLib;
 using MGSC;
 using UnityEngine;
 
-namespace MoreCombatInfo.Patches
+namespace MoreCombatInfo.Patches.ToHitPatches
 {
     [HarmonyPatch(typeof(DamageHitInfo), MethodType.Constructor,
         new Type[] {

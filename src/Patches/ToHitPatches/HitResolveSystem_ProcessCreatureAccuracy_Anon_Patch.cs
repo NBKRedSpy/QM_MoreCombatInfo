@@ -13,7 +13,7 @@ using UnityEngine;
 using static HarmonyLib.Code;
 using Random = UnityEngine.Random;
 
-namespace MoreCombatInfo.Patches
+namespace MoreCombatInfo.Patches.ToHitPatches
 {
     /// <summary>
     /// The anonymous function in the MGSC.HitResolveSystem.ProcessCreatureAccuracy method's ForEach() call.

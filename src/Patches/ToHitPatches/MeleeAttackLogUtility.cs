@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MoreCombatInfo.Patches
+namespace MoreCombatInfo.Patches.ToHitPatches
 {
     /// <summary>
     /// Handles creating the hit log for melee attacks.

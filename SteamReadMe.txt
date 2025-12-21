@@ -1,7 +1,7 @@
 [h1]Quasimorph More Combat Info[/h1]
 
 
-Adds the hit percentages to the combat log.  The mod can be configured to show the "inverted rolls" as older versions of this mod did.  See the Configuration section.
+Adds the hit percentages to the combat log. Also suffixes damage numbers from critical hits with an exclamation point  The mod can be configured to show the "inverted rolls" as older versions of this mod did.  See the Configuration section.
 
 [h1]Docs[/h1]
 
@@ -95,6 +95,14 @@ Source code is available on GitHub at https://github.com/NBKRedSpy/QM_MoreCombat
 
 [h1]Change Log[/h1]
 
+[h2]1.6.0[/h2]
+[list]
+[*]Added Critical Hit indicator on damage.
+[list]
+[*]Original code written by Traveler.
+[/list]
+[/list]
+
 [h2]1.5.0[/h2]
 
 Multi version support
@@ -107,37 +115,4 @@ Multi version support
 [h2]1.4.0[/h2]
 [list]
 [*]MCM Integration
-[/list]
-
-[h2]1.3.0[/h2]
-[list]
-[*]Rewrite for 0.9.5 compatibility.
-[/list]
-
-[h2]1.2.3[/h2]
-[list]
-[*]0.9.2 Compatibility
-[/list]
-
-[h2]1.2.2[/h2]
-
-Added the 'InvertToHit' option.
-
-[h2]1.2.1[/h2]
-[list]
-[*]0.9.1 Compatibility.
-[/list]
-
-[h2]1.2.0[/h2]
-[list]
-[*]Changed log to be the more common To Hit and Roll format.  Effectively inverse of the game's internal rolls.
-[*]Overrode localization errors.  Unfortunately, this is global.
-[/list]
-
-[h2]1.1.1[/h2]
-[list]
-[*]Fixed attacker header not showing or ordered late in some cases.
-[*]Added brackets around hit and miss.
-[*]Added more dashes to attacker to find easier.
-[*]Fixed null reference error due to Mono not liking null forgiving operators in some cases.
 [/list]
