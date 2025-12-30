@@ -14,6 +14,7 @@ namespace MoreCombatInfo_Bootstrap
     {
 
         public Action<IModContext> BeforeBootstrap;
+        public Action<IModContext> AfterBootstrap;
         public Action<IModContext> AfterConfigsLoaded;
     }
 }

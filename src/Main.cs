@@ -74,6 +74,8 @@ namespace MoreCombatInfo_Bootstrap
             }
         }
 
+        [Hook(ModHookType.AfterBootstrap)]
+        public static void AfterBootstrapCallback(IModContext context) => HookEvents.AfterBootstrap?.Invoke(context);
 
         [Hook(ModHookType.AfterConfigsLoaded)]
         public static void AfterConfigsLoadedCallback(IModContext context) => HookEvents.AfterConfigsLoaded?.Invoke(context);
