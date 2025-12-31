@@ -11,7 +11,7 @@ namespace MoreCombatInfo.Patches.CriticalHitPatches
     {
         public static void Postfix(MeleeAttackLogEntry __instance, ref string __result)
         {
-            CriticalHitUtils.UpdateCriticalHit(__instance.FinalDmg, ref __result);
+            __result = CriticalHitUtils.AddCriticalHitText(__instance, __result);
         }
     }
 }

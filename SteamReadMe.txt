@@ -3,6 +3,10 @@
 
 Adds the hit percentages to the combat log. Also suffixes damage numbers from critical hits with an exclamation point  The mod can be configured to show the "inverted rolls" as older versions of this mod did.  See the Configuration section.
 
+[h1]Critical Hit Note[/h1]
+
+When reloading a game, critical hits in the log will no longer have the ! suffix.  This is due to how the game saves the combat log.
+
 [h1]Docs[/h1]
 
 Example: [i][Hit] To Hit: 30 Roll: 55 Dodge: 10[/i]
@@ -74,11 +78,6 @@ The hit rolls only show if the projectile crossed a creature.  So if a shot goes
 
 The accuracy and roll numbers are displayed as whole numbers, but are actually decimals.  It is possible for the display to show the same number but still miss.  Ex:  51 vs 51 when in reality it is 51.1 vs 51.3
 
-[h1]Known Issues[/h1]
-[list]
-[*]When an attack has multiple rolls, all the rolls will be first, and then any damage will follow.
-[/list]
-
 [h1]Support Development[/h1]
 
 If you enjoy my mods and want to buy me a coffee, check out my [url=https://ko-fi.com/nbkredspy71915]Ko-Fi[/url] page.
@@ -95,7 +94,7 @@ Source code is available on GitHub at https://github.com/NBKRedSpy/QM_MoreCombat
 
 [h1]Change Log[/h1]
 
-[h2]1.6.0[/h2]
+[h2]1.6.1[/h2]
 [list]
 [*]Added Critical Hit indicator on damage.
 [list]
