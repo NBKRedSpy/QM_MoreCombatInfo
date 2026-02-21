@@ -1,4 +1,5 @@
 ﻿using ModConfigMenu;
+using ModConfigMenu.Contracts;
 using ModConfigMenu.Objects;
 using System.Collections.Generic;
 
@@ -11,7 +12,7 @@ namespace MoreCombatInfo.Mcm
 
         public override void Configure()
         {
-            ModConfigMenuAPI.RegisterModConfig("More Combat Info", new List<ConfigValue>()
+            ModConfigMenuAPI.RegisterModConfig("More Combat Info", new List<IConfigValue>()
             {
                 CreateConfigProperty(nameof(ModConfig.InvertToHit),
                     "If true, will change the roll for the To Hit to need to be over the target."),

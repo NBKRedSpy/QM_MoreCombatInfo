@@ -23,7 +23,7 @@
 		.method private hidebysig specialname rtspecialname static 
 			void .cctor () cil managed 
 		{
-			// Method begins at RVA 0x13a66a
+			// Method begins at RVA 0x17bd8a
 			// Header size: 1
 			// Code size: 11 (0xb)
 			.maxstack 8
@@ -38,7 +38,7 @@
 		.method public hidebysig specialname rtspecialname 
 			instance void .ctor () cil managed 
 		{
-			// Method begins at RVA 0x13a676
+			// Method begins at RVA 0x17bd96
 			// Header size: 1
 			// Code size: 7 (0x7)
 			.maxstack 8
@@ -56,9 +56,9 @@
 				valuetype MGSC.HitEvent& hitEvent
 			) cil managed 
 		{
-			// Method begins at RVA 0x13a680
+			// Method begins at RVA 0x17bda0
 			// Header size: 12
-			// Code size: 464 (0x1d0)
+			// Code size: 541 (0x21d)
 			.maxstack 3
 			.locals init (
 				[0] valuetype MGSC.CollisionWithObstacle&,
@@ -70,7 +70,8 @@
 				[6] valuetype MGSC.CellPosition,
 				[7] int32,
 				[8] int32,
-				[9] valuetype MGSC.Door/DoorState
+				[9] class MGSC.Creature,
+				[10] valuetype MGSC.Door/DoorState
 			)
 
 			// if (!_cacheEntities.IsAlive(hitEvent.ProjEntityId))
@@ -143,7 +144,7 @@
 			IL_008d: ldloc.2
 			IL_008e: ldnull
 			IL_008f: call bool [UnityEngine.CoreModule]UnityEngine.Object::op_Inequality(class [UnityEngine.CoreModule]UnityEngine.Object, class [UnityEngine.CoreModule]UnityEngine.Object)
-			IL_0094: brfalse IL_0158
+			IL_0094: brfalse IL_01a5
 
 			// int num = obstacleHealth.HitChanceOnShoot;
 			IL_0099: ldloc.2
@@ -161,138 +162,167 @@
 			IL_00b4: ldloc.s 5
 			IL_00b6: ldnull
 			IL_00b7: call bool [UnityEngine.CoreModule]UnityEngine.Object::op_Inequality(class [UnityEngine.CoreModule]UnityEngine.Object, class [UnityEngine.CoreModule]UnityEngine.Object)
-			IL_00bc: brfalse.s IL_0134
+			IL_00bc: brfalse IL_0181
 
-			IL_00be: ldloc.2
-			IL_00bf: callvirt instance bool MGSC.ObstacleHealth::get_IsDestroyed()
-			IL_00c4: brtrue.s IL_0134
+			IL_00c1: ldloc.2
+			IL_00c2: callvirt instance bool MGSC.ObstacleHealth::get_IsDestroyed()
+			IL_00c7: brtrue IL_0181
 
 			// CellPosition position = mapObstacle.Position;
-			IL_00c6: ldloc.1
-			IL_00c7: callvirt instance valuetype MGSC.CellPosition MGSC.MapObstacle::get_Position()
-			IL_00cc: stloc.s 6
+			IL_00cc: ldloc.1
+			IL_00cd: callvirt instance valuetype MGSC.CellPosition MGSC.MapObstacle::get_Position()
+			IL_00d2: stloc.s 6
 			// CellPosition position2 = player.CreatureData.Position;
-			IL_00ce: ldloc.s 5
-			IL_00d0: ldfld class MGSC.CreatureData MGSC.Creature::CreatureData
-			IL_00d5: ldfld valuetype MGSC.CellPosition MGSC.CreatureData::Position
+			IL_00d4: ldloc.s 5
+			IL_00d6: ldfld class MGSC.CreatureData MGSC.Creature::CreatureData
+			IL_00db: ldfld valuetype MGSC.CellPosition MGSC.CreatureData::Position
 			// int num3 = position2.X - position.X;
-			IL_00da: dup
-			IL_00db: ldfld int32 MGSC.CellPosition::X
-			IL_00e0: ldloc.s 6
-			IL_00e2: ldfld int32 MGSC.CellPosition::X
-			IL_00e7: sub
-			IL_00e8: stloc.s 7
+			IL_00e0: dup
+			IL_00e1: ldfld int32 MGSC.CellPosition::X
+			IL_00e6: ldloc.s 6
+			IL_00e8: ldfld int32 MGSC.CellPosition::X
+			IL_00ed: sub
+			IL_00ee: stloc.s 7
 			// int num4 = position2.Y - position.Y;
-			IL_00ea: ldfld int32 MGSC.CellPosition::Y
-			IL_00ef: ldloc.s 6
-			IL_00f1: ldfld int32 MGSC.CellPosition::Y
-			IL_00f6: sub
-			IL_00f7: stloc.s 8
+			IL_00f0: ldfld int32 MGSC.CellPosition::Y
+			IL_00f5: ldloc.s 6
+			IL_00f7: ldfld int32 MGSC.CellPosition::Y
+			IL_00fc: sub
+			IL_00fd: stloc.s 8
 			// if ((num3 | num4) != 0 && Mathf.Abs(num3) <= 1 && Mathf.Abs(num4) <= 1)
-			IL_00f9: ldloc.s 7
-			IL_00fb: ldloc.s 8
-			IL_00fd: or
-			IL_00fe: brfalse.s IL_0134
+			IL_00ff: ldloc.s 7
+			IL_0101: ldloc.s 8
+			IL_0103: or
+			IL_0104: brfalse.s IL_013a
 
-			IL_0100: ldloc.s 7
-			IL_0102: call int32 [UnityEngine.CoreModule]UnityEngine.Mathf::Abs(int32)
-			IL_0107: ldc.i4.1
-			IL_0108: bgt.s IL_0134
+			IL_0106: ldloc.s 7
+			IL_0108: call int32 [UnityEngine.CoreModule]UnityEngine.Mathf::Abs(int32)
+			IL_010d: ldc.i4.1
+			IL_010e: bgt.s IL_013a
 
-			IL_010a: ldloc.s 8
-			IL_010c: call int32 [UnityEngine.CoreModule]UnityEngine.Mathf::Abs(int32)
-			IL_0111: ldc.i4.1
-			IL_0112: bgt.s IL_0134
+			IL_0110: ldloc.s 8
+			IL_0112: call int32 [UnityEngine.CoreModule]UnityEngine.Mathf::Abs(int32)
+			IL_0117: ldc.i4.1
+			IL_0118: bgt.s IL_013a
 
 			// num += player.CreatureData.CoverHitChanceBonus;
-			IL_0114: ldloc.3
-			IL_0115: ldloc.s 5
-			IL_0117: ldfld class MGSC.CreatureData MGSC.Creature::CreatureData
-			IL_011c: ldfld int32 MGSC.CreatureData::CoverHitChanceBonus
-			IL_0121: add
-			IL_0122: stloc.3
+			IL_011a: ldloc.3
+			IL_011b: ldloc.s 5
+			IL_011d: ldfld class MGSC.CreatureData MGSC.Creature::CreatureData
+			IL_0122: ldfld int32 MGSC.CreatureData::CoverHitChanceBonus
+			IL_0127: add
+			IL_0128: stloc.3
 			// num2 += player.CreatureData.CoverBlockChanceBonus;
-			IL_0123: ldloc.s 4
-			IL_0125: ldloc.s 5
-			IL_0127: ldfld class MGSC.CreatureData MGSC.Creature::CreatureData
-			IL_012c: ldfld int32 MGSC.CreatureData::CoverBlockChanceBonus
-			IL_0131: add
-			IL_0132: stloc.s 4
+			IL_0129: ldloc.s 4
+			IL_012b: ldloc.s 5
+			IL_012d: ldfld class MGSC.CreatureData MGSC.Creature::CreatureData
+			IL_0132: ldfld int32 MGSC.CreatureData::CoverBlockChanceBonus
+			IL_0137: add
+			IL_0138: stloc.s 4
+
+			// Creature creature = _cacheCreatures.GetCreature(hitEvent.OwnerUid);
+			IL_013a: ldsfld class MGSC.Creatures MGSC.HitResolveSystem::_cacheCreatures
+			IL_013f: ldarg.2
+			IL_0140: ldfld int32 MGSC.HitEvent::OwnerUid
+			IL_0145: callvirt instance class MGSC.Creature MGSC.Creatures::GetCreature(int32)
+			IL_014a: stloc.s 9
+			// if (player == creature)
+			IL_014c: ldloc.s 5
+			IL_014e: ldloc.s 9
+			IL_0150: call bool [UnityEngine.CoreModule]UnityEngine.Object::op_Equality(class [UnityEngine.CoreModule]UnityEngine.Object, class [UnityEngine.CoreModule]UnityEngine.Object)
+			IL_0155: brfalse.s IL_0181
+
+			// num += player.Mercenary.CurseData.CoverPierceBlockResist;
+			IL_0157: ldloc.3
+			IL_0158: ldloc.s 5
+			IL_015a: callvirt instance class MGSC.Mercenary MGSC.Player::get_Mercenary()
+			IL_015f: ldfld class MGSC.CurseData MGSC.Mercenary::CurseData
+			IL_0164: ldfld int32 MGSC.CurseData::CoverPierceBlockResist
+			IL_0169: add
+			IL_016a: stloc.3
+			// num2 += player.Mercenary.CurseData.CoverPierceBlockResist;
+			IL_016b: ldloc.s 4
+			IL_016d: ldloc.s 5
+			IL_016f: callvirt instance class MGSC.Mercenary MGSC.Player::get_Mercenary()
+			IL_0174: ldfld class MGSC.CurseData MGSC.Mercenary::CurseData
+			IL_0179: ldfld int32 MGSC.CurseData::CoverPierceBlockResist
+			IL_017e: add
+			IL_017f: stloc.s 4
 
 			// hitEvent.WasMiss = Random.Range(1, 101) >= num;
-			IL_0134: ldarg.2
-			IL_0135: ldc.i4.1
-			IL_0136: ldc.i4.s 101
-			IL_0138: call int32 [UnityEngine.CoreModule]UnityEngine.Random::Range(int32, int32)
-			IL_013d: ldloc.3
-			IL_013e: clt
-			IL_0140: ldc.i4.0
-			IL_0141: ceq
-			IL_0143: stfld bool MGSC.HitEvent::WasMiss
+			IL_0181: ldarg.2
+			IL_0182: ldc.i4.1
+			IL_0183: ldc.i4.s 101
+			IL_0185: call int32 [UnityEngine.CoreModule]UnityEngine.Random::Range(int32, int32)
+			IL_018a: ldloc.3
+			IL_018b: clt
+			IL_018d: ldc.i4.0
+			IL_018e: ceq
+			IL_0190: stfld bool MGSC.HitEvent::WasMiss
 			// reference.PierceBlock = (float)num2 * 0.01f;
-			IL_0148: ldloc.0
-			IL_0149: ldloc.s 4
-			IL_014b: conv.r4
-			IL_014c: ldc.r4 0.01
-			IL_0151: mul
-			IL_0152: stfld float32 MGSC.CollisionWithObstacle::PierceBlock
+			IL_0195: ldloc.0
+			IL_0196: ldloc.s 4
+			IL_0198: conv.r4
+			IL_0199: ldc.r4 0.01
+			IL_019e: mul
+			IL_019f: stfld float32 MGSC.CollisionWithObstacle::PierceBlock
 			// if (!(mapObstacle.Door != null))
-			IL_0157: ret
+			IL_01a4: ret
 
-			IL_0158: ldloc.1
-			IL_0159: callvirt instance class MGSC.Door MGSC.MapObstacle::get_Door()
-			IL_015e: ldnull
-			IL_015f: call bool [UnityEngine.CoreModule]UnityEngine.Object::op_Inequality(class [UnityEngine.CoreModule]UnityEngine.Object, class [UnityEngine.CoreModule]UnityEngine.Object)
-			IL_0164: brfalse.s IL_01cf
+			IL_01a5: ldloc.1
+			IL_01a6: callvirt instance class MGSC.Door MGSC.MapObstacle::get_Door()
+			IL_01ab: ldnull
+			IL_01ac: call bool [UnityEngine.CoreModule]UnityEngine.Object::op_Inequality(class [UnityEngine.CoreModule]UnityEngine.Object, class [UnityEngine.CoreModule]UnityEngine.Object)
+			IL_01b1: brfalse.s IL_021c
 
 			// hitEvent.WasMiss = false;
-			IL_0166: ldarg.2
-			IL_0167: ldc.i4.0
-			IL_0168: stfld bool MGSC.HitEvent::WasMiss
+			IL_01b3: ldarg.2
+			IL_01b4: ldc.i4.0
+			IL_01b5: stfld bool MGSC.HitEvent::WasMiss
 			// if (mapObstacle.Door.CanBePierced)
-			IL_016d: ldloc.1
-			IL_016e: callvirt instance class MGSC.Door MGSC.MapObstacle::get_Door()
-			IL_0173: ldfld bool MGSC.Door::CanBePierced
-			IL_0178: brfalse.s IL_0186
+			IL_01ba: ldloc.1
+			IL_01bb: callvirt instance class MGSC.Door MGSC.MapObstacle::get_Door()
+			IL_01c0: ldfld bool MGSC.Door::CanBePierced
+			IL_01c5: brfalse.s IL_01d3
 
 			// reference.PierceBlock = 0f;
-			IL_017a: ldloc.0
-			IL_017b: ldc.r4 0.0
-			IL_0180: stfld float32 MGSC.CollisionWithObstacle::PierceBlock
+			IL_01c7: ldloc.0
+			IL_01c8: ldc.r4 0.0
+			IL_01cd: stfld float32 MGSC.CollisionWithObstacle::PierceBlock
 			// switch (mapObstacle.Door.State)
-			IL_0185: ret
+			IL_01d2: ret
 
-			IL_0186: ldloc.1
-			IL_0187: callvirt instance class MGSC.Door MGSC.MapObstacle::get_Door()
-			IL_018c: callvirt instance valuetype MGSC.Door/DoorState MGSC.Door::get_State()
-			IL_0191: stloc.s 9
+			IL_01d3: ldloc.1
+			IL_01d4: callvirt instance class MGSC.Door MGSC.MapObstacle::get_Door()
+			IL_01d9: callvirt instance valuetype MGSC.Door/DoorState MGSC.Door::get_State()
+			IL_01de: stloc.s 10
 			// (no C# code)
-			IL_0193: ldloc.s 9
-			IL_0195: switch (IL_01b8, IL_01c4, IL_01b8, IL_01ac)
+			IL_01e0: ldloc.s 10
+			IL_01e2: switch (IL_0205, IL_0211, IL_0205, IL_01f9)
 
 			// reference.PierceBlock = 0.5f;
-			IL_01aa: br.s IL_01c4
+			IL_01f7: br.s IL_0211
 
-			IL_01ac: ldloc.0
-			IL_01ad: ldc.r4 0.5
-			IL_01b2: stfld float32 MGSC.CollisionWithObstacle::PierceBlock
+			IL_01f9: ldloc.0
+			IL_01fa: ldc.r4 0.5
+			IL_01ff: stfld float32 MGSC.CollisionWithObstacle::PierceBlock
 			// break;
-			IL_01b7: ret
+			IL_0204: ret
 
 			// reference.PierceBlock = 1f;
-			IL_01b8: ldloc.0
-			IL_01b9: ldc.r4 1
-			IL_01be: stfld float32 MGSC.CollisionWithObstacle::PierceBlock
+			IL_0205: ldloc.0
+			IL_0206: ldc.r4 1
+			IL_020b: stfld float32 MGSC.CollisionWithObstacle::PierceBlock
 			// break;
-			IL_01c3: ret
+			IL_0210: ret
 
 			// reference.PierceBlock = 0f;
-			IL_01c4: ldloc.0
-			IL_01c5: ldc.r4 0.0
-			IL_01ca: stfld float32 MGSC.CollisionWithObstacle::PierceBlock
+			IL_0211: ldloc.0
+			IL_0212: ldc.r4 0.0
+			IL_0217: stfld float32 MGSC.CollisionWithObstacle::PierceBlock
 
 			// break;
-			IL_01cf: ret
+			IL_021c: ret
 		} // end of method '<>c'::'<ProcessObstacleAccuracy>b__8_0'
 
 		.method assembly hidebysig 
@@ -301,19 +331,26 @@
 				valuetype MGSC.HitEvent& hitEvent
 			) cil managed 
 		{
-			// Method begins at RVA 0x13a85c
+			// Method begins at RVA 0x17bfcc
 			// Header size: 12
-			// Code size: 399 (0x18f)
-			.maxstack 4
+			// Code size: 649 (0x289)
+			.maxstack 9
 			.locals init (
-				[0] valuetype MGSC.ProjectileRuntimeData&,
-				[1] valuetype MGSC.CollisionWithCreature&,
-				[2] class MGSC.Creature,
-				[3] float32,
+				[0] valuetype MGSC.Ballistic&,
+				[1] valuetype MGSC.ProjectileRuntimeData&,
+				[2] valuetype MGSC.CollisionWithCreature&,
+				[3] class MGSC.Creature,
 				[4] float32,
 				[5] float32,
-				[6] class MGSC.Creature,
-				[7] valuetype MGSC.SuppressTarget
+				[6] float32,
+				[7] class MGSC.Creature,
+				[8] int32,
+				[9] valuetype MGSC.CellPosition,
+				[10] valuetype MGSC.CellPosition,
+				[11] valuetype [UnityEngine.CoreModule]UnityEngine.Vector2,
+				[12] valuetype MGSC.Ballistic,
+				[13] class MGSC.ProjectileView,
+				[14] valuetype MGSC.SuppressTarget
 			)
 
 			// if (!_cacheEntities.IsAlive(hitEvent.ProjEntityId))
@@ -330,163 +367,252 @@
 			// }
 			IL_001d: ret
 
-			// ref ProjectileRuntimeData reference = ref _cacheEntities.GetRef<ProjectileRuntimeData>(hitEvent.ProjEntityId);
+			// ref Ballistic reference = ref _cacheEntities.GetRef<Ballistic>(hitEvent.ProjEntityId);
 			IL_001e: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
 			IL_0023: ldarg.2
 			IL_0024: ldfld int32 MGSC.HitEvent::ProjEntityId
-			IL_0029: callvirt instance !!0& MGSC.Entities::GetRef<valuetype MGSC.ProjectileRuntimeData>(int32)
+			IL_0029: callvirt instance !!0& MGSC.Entities::GetRef<valuetype MGSC.Ballistic>(int32)
 			IL_002e: stloc.0
-			// ref CollisionWithCreature reference2 = ref _cacheEntities.GetRef<CollisionWithCreature>(entity);
+			// ref ProjectileRuntimeData reference2 = ref _cacheEntities.GetRef<ProjectileRuntimeData>(hitEvent.ProjEntityId);
 			IL_002f: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
-			IL_0034: ldarg.1
-			IL_0035: callvirt instance !!0& MGSC.Entities::GetRef<valuetype MGSC.CollisionWithCreature>(int32)
-			IL_003a: stloc.1
-			// Creature creature = _cacheCreatures.GetCreature(reference2.CreatureUid);
-			IL_003b: ldsfld class MGSC.Creatures MGSC.HitResolveSystem::_cacheCreatures
-			IL_0040: ldloc.1
-			IL_0041: ldfld int32 MGSC.CollisionWithCreature::CreatureUid
-			IL_0046: callvirt instance class MGSC.Creature MGSC.Creatures::GetCreature(int32)
+			IL_0034: ldarg.2
+			IL_0035: ldfld int32 MGSC.HitEvent::ProjEntityId
+			IL_003a: callvirt instance !!0& MGSC.Entities::GetRef<valuetype MGSC.ProjectileRuntimeData>(int32)
+			IL_003f: stloc.1
+			// ref CollisionWithCreature reference3 = ref _cacheEntities.GetRef<CollisionWithCreature>(entity);
+			IL_0040: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
+			IL_0045: ldarg.1
+			IL_0046: callvirt instance !!0& MGSC.Entities::GetRef<valuetype MGSC.CollisionWithCreature>(int32)
 			IL_004b: stloc.2
+			// Creature creature = _cacheCreatures.GetCreature(reference3.CreatureUid);
+			IL_004c: ldsfld class MGSC.Creatures MGSC.HitResolveSystem::_cacheCreatures
+			IL_0051: ldloc.2
+			IL_0052: ldfld int32 MGSC.CollisionWithCreature::CreatureUid
+			IL_0057: callvirt instance class MGSC.Creature MGSC.Creatures::GetCreature(int32)
+			IL_005c: stloc.3
 			// if (creature == null)
-			IL_004c: ldloc.2
-			IL_004d: ldnull
-			IL_004e: call bool [UnityEngine.CoreModule]UnityEngine.Object::op_Equality(class [UnityEngine.CoreModule]UnityEngine.Object, class [UnityEngine.CoreModule]UnityEngine.Object)
-			IL_0053: brfalse.s IL_0061
+			IL_005d: ldloc.3
+			IL_005e: ldnull
+			IL_005f: call bool [UnityEngine.CoreModule]UnityEngine.Object::op_Equality(class [UnityEngine.CoreModule]UnityEngine.Object, class [UnityEngine.CoreModule]UnityEngine.Object)
+			IL_0064: brfalse.s IL_0072
 
 			// _cacheEntities.ScheduleDestroy(entity);
-			IL_0055: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
-			IL_005a: ldarg.1
-			IL_005b: callvirt instance void MGSC.Entities::ScheduleDestroy(int32)
+			IL_0066: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
+			IL_006b: ldarg.1
+			IL_006c: callvirt instance void MGSC.Entities::ScheduleDestroy(int32)
+			// if (creature.CreatureData.EffectsController.HasAnyEffect<ReflectShieldBuff>())
+			IL_0071: ret
+
+			IL_0072: ldloc.3
+			IL_0073: ldfld class MGSC.CreatureData MGSC.Creature::CreatureData
+			IL_0078: ldfld class MGSC.EffectsController MGSC.CreatureData::EffectsController
+			IL_007d: callvirt instance bool MGSC.EffectsController::HasAnyEffect<class MGSC.ReflectShieldBuff>()
+			IL_0082: brfalse IL_0159
+
+			// int num = _cacheEntities.CreateEntity();
+			IL_0087: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
+			IL_008c: callvirt instance int32 MGSC.Entities::CreateEntity()
+			IL_0091: stloc.s 8
+			// CellPosition hitPosition = hitEvent.HitPosition;
+			IL_0093: ldarg.2
+			IL_0094: ldfld valuetype MGSC.CellPosition MGSC.HitEvent::HitPosition
+			IL_0099: stloc.s 9
+			// CellPosition initialPosition = reference.InitialPosition;
+			IL_009b: ldloc.0
+			IL_009c: ldfld valuetype MGSC.CellPosition MGSC.Ballistic::InitialPosition
+			IL_00a1: stloc.s 10
+			// Vector2 vector = _cacheMapRenderer.CoordsToPositionCenterPivot(hitPosition);
+			IL_00a3: ldsfld class MGSC.MapRenderer MGSC.HitResolveSystem::_cacheMapRenderer
+			IL_00a8: ldloc.s 9
+			IL_00aa: callvirt instance valuetype [UnityEngine.CoreModule]UnityEngine.Vector2 MGSC.MapRenderer::CoordsToPositionCenterPivot(valuetype MGSC.CellPosition)
+			IL_00af: stloc.s 11
+			// Ballistic comp = BallisticSystem.CreateBallistic(_cacheMapGrid, hitPosition, initialPosition, vector, reference2.Speed, 0f, reference.MaxDistance, 0, isPreciseTarget: true);
+			IL_00b1: ldsfld class MGSC.MapGrid MGSC.HitResolveSystem::_cacheMapGrid
+			IL_00b6: ldloc.s 9
+			IL_00b8: ldloc.s 10
+			IL_00ba: ldloc.s 11
+			IL_00bc: call valuetype [UnityEngine.CoreModule]UnityEngine.Vector3 [UnityEngine.CoreModule]UnityEngine.Vector2::op_Implicit(valuetype [UnityEngine.CoreModule]UnityEngine.Vector2)
+			IL_00c1: ldloc.1
+			IL_00c2: ldfld float32 MGSC.ProjectileRuntimeData::Speed
+			IL_00c7: ldc.r4 0.0
+			IL_00cc: ldloc.0
+			IL_00cd: ldfld int32 MGSC.Ballistic::MaxDistance
+			IL_00d2: ldc.i4.0
+			IL_00d3: ldc.i4.1
+			IL_00d4: call valuetype MGSC.Ballistic MGSC.BallisticSystem::CreateBallistic(class MGSC.MapGrid, valuetype MGSC.CellPosition, valuetype MGSC.CellPosition, valuetype [UnityEngine.CoreModule]UnityEngine.Vector3, float32, float32, int32, int32, bool)
+			IL_00d9: stloc.s 12
+			// comp.OwnerUid = hitEvent.OwnerUid;
+			IL_00db: ldloca.s 12
+			IL_00dd: ldarg.2
+			IL_00de: ldfld int32 MGSC.HitEvent::OwnerUid
+			IL_00e3: stfld int32 MGSC.Ballistic::OwnerUid
+			// _cacheEntities.Add(num, comp);
+			IL_00e8: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
+			IL_00ed: ldloc.s 8
+			IL_00ef: ldloc.s 12
+			IL_00f1: callvirt instance void MGSC.Entities::Add<valuetype MGSC.Ballistic>(int32, !!0)
+			// _cacheEntities.Add(num, reference2);
+			IL_00f6: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
+			IL_00fb: ldloc.s 8
+			IL_00fd: ldloc.1
+			IL_00fe: ldobj MGSC.ProjectileRuntimeData
+			IL_0103: callvirt instance void MGSC.Entities::Add<valuetype MGSC.ProjectileRuntimeData>(int32, !!0)
+			// ProjectileView bullet = (Data.Projectiles.GetRecord(SharedStringIds.Get(reference2.ProjectileId)).ContentDescriptor as ProjectileDescriptor).Bullet;
+			IL_0108: call class MGSC.ConfigRecordCollection`1<class MGSC.ProjectileRecord> MGSC.Data::get_Projectiles()
+			IL_010d: ldloc.1
+			IL_010e: ldfld int32 MGSC.ProjectileRuntimeData::ProjectileId
+			IL_0113: call string MGSC.SharedStringIds::Get(int32)
+			IL_0118: ldc.i4.1
+			IL_0119: callvirt instance !0 class MGSC.ConfigRecordCollection`1<class MGSC.ProjectileRecord>::GetRecord(string, bool)
+			IL_011e: callvirt instance class [UnityEngine.CoreModule]UnityEngine.Object MGSC.ConfigTableRecord::get_ContentDescriptor()
+			IL_0123: isinst MGSC.ProjectileDescriptor
+			IL_0128: callvirt instance class MGSC.ProjectileView MGSC.ProjectileDescriptor::get_Bullet()
+			IL_012d: stloc.s 13
+			// SingletonMonoBehaviour<BulletFactory>.Instance.SpawnBullet(vector, hitPosition, bullet, num);
+			IL_012f: call !0 class MGSC.SingletonMonoBehaviour`1<class MGSC.BulletFactory>::get_Instance()
+			IL_0134: ldloc.s 11
+			IL_0136: call valuetype [UnityEngine.CoreModule]UnityEngine.Vector3 [UnityEngine.CoreModule]UnityEngine.Vector2::op_Implicit(valuetype [UnityEngine.CoreModule]UnityEngine.Vector2)
+			IL_013b: ldloc.s 9
+			IL_013d: ldloc.s 13
+			IL_013f: ldloc.s 8
+			IL_0141: ldnull
+			IL_0142: callvirt instance class MGSC.ProjectileView MGSC.BulletFactory::SpawnBullet(valuetype [UnityEngine.CoreModule]UnityEngine.Vector3, valuetype MGSC.CellPosition, class MGSC.ProjectileView, int32, class [mscorlib]System.Collections.Generic.List`1<valuetype MGSC.CellPosition>)
+			IL_0147: pop
+			// _cacheEntities.ScheduleDestroy(hitEvent.ProjEntityId);
+			IL_0148: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
+			IL_014d: ldarg.2
+			IL_014e: ldfld int32 MGSC.HitEvent::ProjEntityId
+			IL_0153: callvirt instance void MGSC.Entities::ScheduleDestroy(int32)
 			// creature.ActivateAttackedTrigger(wasHit: false);
-			IL_0060: ret
+			IL_0158: ret
 
-			IL_0061: ldloc.2
-			IL_0062: ldc.i4.0
-			IL_0063: callvirt instance void MGSC.Creature::ActivateAttackedTrigger(bool)
+			IL_0159: ldloc.3
+			IL_015a: ldc.i4.0
+			IL_015b: callvirt instance void MGSC.Creature::ActivateAttackedTrigger(bool)
 			// hitEvent.CreatureTargetAlliance = creature.CreatureData.CreatureAlliance;
-			IL_0068: ldarg.2
-			IL_0069: ldloc.2
-			IL_006a: ldfld class MGSC.CreatureData MGSC.Creature::CreatureData
-			IL_006f: ldfld valuetype MGSC.CreatureAlliance MGSC.CreatureData::CreatureAlliance
-			IL_0074: stfld valuetype MGSC.CreatureAlliance MGSC.HitEvent::CreatureTargetAlliance
+			IL_0160: ldarg.2
+			IL_0161: ldloc.3
+			IL_0162: ldfld class MGSC.CreatureData MGSC.Creature::CreatureData
+			IL_0167: ldfld valuetype MGSC.CreatureAlliance MGSC.CreatureData::CreatureAlliance
+			IL_016c: stfld valuetype MGSC.CreatureAlliance MGSC.HitEvent::CreatureTargetAlliance
 			// hitEvent.TargetNameTagId = SharedStringIds.Register(creature.CreatureData.LocalizationId);
-			IL_0079: ldarg.2
-			IL_007a: ldloc.2
-			IL_007b: ldfld class MGSC.CreatureData MGSC.Creature::CreatureData
-			IL_0080: ldfld string MGSC.CreatureData::LocalizationId
-			IL_0085: call int32 MGSC.SharedStringIds::Register(string)
-			IL_008a: stfld int32 MGSC.HitEvent::TargetNameTagId
+			IL_0171: ldarg.2
+			IL_0172: ldloc.3
+			IL_0173: ldfld class MGSC.CreatureData MGSC.Creature::CreatureData
+			IL_0178: ldfld string MGSC.CreatureData::LocalizationId
+			IL_017d: call int32 MGSC.SharedStringIds::Register(string)
+			IL_0182: stfld int32 MGSC.HitEvent::TargetNameTagId
 			// hitEvent.TargetDodge = DamageSystem.GetProgressionDodge(creature, _cacheStatistics, _cacheDifficulty);
-			IL_008f: ldarg.2
-			IL_0090: ldloc.2
-			IL_0091: ldsfld class MGSC.Statistics MGSC.HitResolveSystem::_cacheStatistics
-			IL_0096: ldsfld class MGSC.Difficulty MGSC.HitResolveSystem::_cacheDifficulty
-			IL_009b: call float32 MGSC.DamageSystem::GetProgressionDodge(class MGSC.Creature, class MGSC.Statistics, class MGSC.Difficulty)
-			IL_00a0: stfld float32 MGSC.HitEvent::TargetDodge
-			// float value = reference.Accuracy - hitEvent.TargetDodge;
-			IL_00a5: ldloc.0
-			IL_00a6: ldfld float32 MGSC.ProjectileRuntimeData::Accuracy
-			IL_00ab: ldarg.2
-			IL_00ac: ldfld float32 MGSC.HitEvent::TargetDodge
-			IL_00b1: sub
-			IL_00b2: stloc.3
-			// float num = (reference.IsMaxHitChance ? Data.Global.CapAccuracy : Mathf.Clamp(value, Data.Global.MinHitChance, Data.Global.CapAccuracy));
-			IL_00b3: ldloc.0
-			IL_00b4: ldfld bool MGSC.ProjectileRuntimeData::IsMaxHitChance
-			IL_00b9: brtrue.s IL_00d7
+			IL_0187: ldarg.2
+			IL_0188: ldloc.3
+			IL_0189: ldsfld class MGSC.Statistics MGSC.HitResolveSystem::_cacheStatistics
+			IL_018e: ldsfld class MGSC.Difficulty MGSC.HitResolveSystem::_cacheDifficulty
+			IL_0193: call float32 MGSC.DamageSystem::GetProgressionDodge(class MGSC.Creature, class MGSC.Statistics, class MGSC.Difficulty)
+			IL_0198: stfld float32 MGSC.HitEvent::TargetDodge
+			// float value = reference2.Accuracy - hitEvent.TargetDodge;
+			IL_019d: ldloc.1
+			IL_019e: ldfld float32 MGSC.ProjectileRuntimeData::Accuracy
+			IL_01a3: ldarg.2
+			IL_01a4: ldfld float32 MGSC.HitEvent::TargetDodge
+			IL_01a9: sub
+			IL_01aa: stloc.s 4
+			// float num2 = (reference2.IsMaxHitChance ? Data.Global.CapAccuracy : Mathf.Clamp(value, Data.Global.MinHitChance, Data.Global.CapAccuracy));
+			IL_01ac: ldloc.1
+			IL_01ad: ldfld bool MGSC.ProjectileRuntimeData::IsMaxHitChance
+			IL_01b2: brtrue.s IL_01d1
 
-			IL_00bb: ldloc.3
-			IL_00bc: call class MGSC.GlobalSettings MGSC.Data::get_Global()
-			IL_00c1: callvirt instance float32 MGSC.GlobalSettings::get_MinHitChance()
-			IL_00c6: call class MGSC.GlobalSettings MGSC.Data::get_Global()
-			IL_00cb: callvirt instance float32 MGSC.GlobalSettings::get_CapAccuracy()
-			IL_00d0: call float32 [UnityEngine.CoreModule]UnityEngine.Mathf::Clamp(float32, float32, float32)
-			IL_00d5: br.s IL_00e1
+			IL_01b4: ldloc.s 4
+			IL_01b6: call class MGSC.GlobalSettings MGSC.Data::get_Global()
+			IL_01bb: callvirt instance float32 MGSC.GlobalSettings::get_MinHitChance()
+			IL_01c0: call class MGSC.GlobalSettings MGSC.Data::get_Global()
+			IL_01c5: callvirt instance float32 MGSC.GlobalSettings::get_CapAccuracy()
+			IL_01ca: call float32 [UnityEngine.CoreModule]UnityEngine.Mathf::Clamp(float32, float32, float32)
+			IL_01cf: br.s IL_01db
 
-			// float num2 = Random.Range(0f, 1f);
-			IL_00d7: call class MGSC.GlobalSettings MGSC.Data::get_Global()
-			IL_00dc: callvirt instance float32 MGSC.GlobalSettings::get_CapAccuracy()
+			// float num3 = Random.Range(0f, 1f);
+			IL_01d1: call class MGSC.GlobalSettings MGSC.Data::get_Global()
+			IL_01d6: callvirt instance float32 MGSC.GlobalSettings::get_CapAccuracy()
 
-			IL_00e1: stloc.s 4
-			IL_00e3: ldc.r4 0.0
-			IL_00e8: ldc.r4 1
-			IL_00ed: call float32 [UnityEngine.CoreModule]UnityEngine.Random::Range(float32, float32)
-			IL_00f2: stloc.s 5
-			// hitEvent.WasMiss = num2 > num;
-			IL_00f4: ldarg.2
-			IL_00f5: ldloc.s 5
-			IL_00f7: ldloc.s 4
-			IL_00f9: cgt
-			IL_00fb: stfld bool MGSC.HitEvent::WasMiss
+			IL_01db: stloc.s 5
+			IL_01dd: ldc.r4 0.0
+			IL_01e2: ldc.r4 1
+			IL_01e7: call float32 [UnityEngine.CoreModule]UnityEngine.Random::Range(float32, float32)
+			IL_01ec: stloc.s 6
+			// hitEvent.WasMiss = num3 > num2;
+			IL_01ee: ldarg.2
+			IL_01ef: ldloc.s 6
+			IL_01f1: ldloc.s 5
+			IL_01f3: cgt
+			IL_01f5: stfld bool MGSC.HitEvent::WasMiss
 			// Creature creature2 = _cacheCreatures.GetCreature(hitEvent.OwnerUid);
-			IL_0100: ldsfld class MGSC.Creatures MGSC.HitResolveSystem::_cacheCreatures
-			IL_0105: ldarg.2
-			IL_0106: ldfld int32 MGSC.HitEvent::OwnerUid
-			IL_010b: callvirt instance class MGSC.Creature MGSC.Creatures::GetCreature(int32)
-			IL_0110: stloc.s 6
+			IL_01fa: ldsfld class MGSC.Creatures MGSC.HitResolveSystem::_cacheCreatures
+			IL_01ff: ldarg.2
+			IL_0200: ldfld int32 MGSC.HitEvent::OwnerUid
+			IL_0205: callvirt instance class MGSC.Creature MGSC.Creatures::GetCreature(int32)
+			IL_020a: stloc.s 7
 			// if (creature2 == null)
-			IL_0112: ldloc.s 6
-			IL_0114: ldnull
-			IL_0115: call bool [UnityEngine.CoreModule]UnityEngine.Object::op_Equality(class [UnityEngine.CoreModule]UnityEngine.Object, class [UnityEngine.CoreModule]UnityEngine.Object)
-			IL_011a: brfalse.s IL_011d
+			IL_020c: ldloc.s 7
+			IL_020e: ldnull
+			IL_020f: call bool [UnityEngine.CoreModule]UnityEngine.Object::op_Equality(class [UnityEngine.CoreModule]UnityEngine.Object, class [UnityEngine.CoreModule]UnityEngine.Object)
+			IL_0214: brfalse.s IL_0217
 
 			// if (!hitEvent.WasMiss)
-			IL_011c: ret
+			IL_0216: ret
 
-			IL_011d: ldarg.2
-			IL_011e: ldfld bool MGSC.HitEvent::WasMiss
-			IL_0123: brtrue.s IL_0143
+			IL_0217: ldarg.2
+			IL_0218: ldfld bool MGSC.HitEvent::WasMiss
+			IL_021d: brtrue.s IL_023d
 
 			// creature2.OnHit();
-			IL_0125: ldloc.s 6
-			IL_0127: callvirt instance void MGSC.Creature::OnHit()
+			IL_021f: ldloc.s 7
+			IL_0221: callvirt instance void MGSC.Creature::OnHit()
 			// creature.ActivateAttackedTrigger(wasHit: true);
-			IL_012c: ldloc.2
-			IL_012d: ldc.i4.1
-			IL_012e: callvirt instance void MGSC.Creature::ActivateAttackedTrigger(bool)
+			IL_0226: ldloc.3
+			IL_0227: ldc.i4.1
+			IL_0228: callvirt instance void MGSC.Creature::ActivateAttackedTrigger(bool)
 			// if (!creature.IsSeenByPlayer)
-			IL_0133: ldloc.2
-			IL_0134: callvirt instance bool MGSC.Creature::get_IsSeenByPlayer()
-			IL_0139: brtrue.s IL_018e
+			IL_022d: ldloc.3
+			IL_022e: callvirt instance bool MGSC.Creature::get_IsSeenByPlayer()
+			IL_0233: brtrue.s IL_0288
 
 			// creature2.OnBlindHit();
-			IL_013b: ldloc.s 6
-			IL_013d: callvirt instance void MGSC.Creature::OnBlindHit()
-			// if (reference.SuppressedAccuracy > 0f)
-			IL_0142: ret
+			IL_0235: ldloc.s 7
+			IL_0237: callvirt instance void MGSC.Creature::OnBlindHit()
+			// if (reference2.SuppressedAccuracy > 0f)
+			IL_023c: ret
 
-			IL_0143: ldloc.0
-			IL_0144: ldfld float32 MGSC.ProjectileRuntimeData::SuppressedAccuracy
-			IL_0149: ldc.r4 0.0
-			IL_014e: ble.un.s IL_0188
+			IL_023d: ldloc.1
+			IL_023e: ldfld float32 MGSC.ProjectileRuntimeData::SuppressedAccuracy
+			IL_0243: ldc.r4 0.0
+			IL_0248: ble.un.s IL_0282
 
 			// 		_cacheEntities.Add(_cacheEntities.CreateEntity(), new SuppressTarget
 			// 		{
-			// 			TargetUid = reference2.CreatureUid,
-			// 			SuppressedAccuracy = reference.SuppressedAccuracy
+			// 			TargetUid = reference3.CreatureUid,
+			// 			SuppressedAccuracy = reference2.SuppressedAccuracy
 			// 		});
-			IL_0150: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
-			IL_0155: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
-			IL_015a: callvirt instance int32 MGSC.Entities::CreateEntity()
-			IL_015f: ldloca.s 7
-			IL_0161: initobj MGSC.SuppressTarget
-			IL_0167: ldloca.s 7
-			IL_0169: ldloc.1
-			IL_016a: ldfld int32 MGSC.CollisionWithCreature::CreatureUid
-			IL_016f: stfld int32 MGSC.SuppressTarget::TargetUid
-			IL_0174: ldloca.s 7
-			IL_0176: ldloc.0
-			IL_0177: ldfld float32 MGSC.ProjectileRuntimeData::SuppressedAccuracy
-			IL_017c: stfld float32 MGSC.SuppressTarget::SuppressedAccuracy
-			IL_0181: ldloc.s 7
+			IL_024a: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
+			IL_024f: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
+			IL_0254: callvirt instance int32 MGSC.Entities::CreateEntity()
+			IL_0259: ldloca.s 14
+			IL_025b: initobj MGSC.SuppressTarget
+			IL_0261: ldloca.s 14
+			IL_0263: ldloc.2
+			IL_0264: ldfld int32 MGSC.CollisionWithCreature::CreatureUid
+			IL_0269: stfld int32 MGSC.SuppressTarget::TargetUid
+			IL_026e: ldloca.s 14
+			IL_0270: ldloc.1
+			IL_0271: ldfld float32 MGSC.ProjectileRuntimeData::SuppressedAccuracy
+			IL_0276: stfld float32 MGSC.SuppressTarget::SuppressedAccuracy
+			IL_027b: ldloc.s 14
 			// creature.ActivateDodgedTrigger();
-			IL_0183: callvirt instance void MGSC.Entities::Add<valuetype MGSC.SuppressTarget>(int32, !!0)
+			IL_027d: callvirt instance void MGSC.Entities::Add<valuetype MGSC.SuppressTarget>(int32, !!0)
 
-			IL_0188: ldloc.2
-			IL_0189: callvirt instance void MGSC.Creature::ActivateDodgedTrigger()
+			IL_0282: ldloc.3
+			IL_0283: callvirt instance void MGSC.Creature::ActivateDodgedTrigger()
 
 			// (no C# code)
-			IL_018e: ret
+			IL_0288: ret
 		} // end of method '<>c'::'<ProcessCreatureAccuracy>b__9_0'
 
 		.method assembly hidebysig 
@@ -495,23 +621,33 @@
 				valuetype MGSC.HitEvent& hitEvent
 			) cil managed 
 		{
-			// Method begins at RVA 0x13a9f8
+			// Method begins at RVA 0x17c264
 			// Header size: 12
-			// Code size: 488 (0x1e8)
-			.maxstack 4
+			// Code size: 908 (0x38c)
+			.maxstack 9
 			.locals init (
-				[0] valuetype MGSC.ProjectileRuntimeData&,
-				[1] class MGSC.Creature,
-				[2] string,
-				[3] int32,
-				[4] valuetype MGSC.PropagatesNoise,
+				[0] valuetype MGSC.Ballistic&,
+				[1] valuetype MGSC.ProjectileRuntimeData&,
+				[2] class MGSC.Creature,
+				[3] string,
+				[4] int32,
 				[5] valuetype MGSC.PropagatesNoise,
-				[6] int32,
+				[6] valuetype MGSC.PropagatesNoise,
 				[7] int32,
 				[8] valuetype MGSC.ExplosionRequest,
 				[9] int32,
 				[10] int32,
-				[11] valuetype MGSC.PropagatesNoise
+				[11] int32,
+				[12] valuetype MGSC.CollisionWithCreature&,
+				[13] class MGSC.Creature,
+				[14] int32,
+				[15] valuetype MGSC.CellPosition,
+				[16] valuetype MGSC.CellPosition,
+				[17] valuetype [UnityEngine.CoreModule]UnityEngine.Vector2,
+				[18] valuetype MGSC.Ballistic,
+				[19] class MGSC.ProjectileView,
+				[20] int32,
+				[21] valuetype MGSC.PropagatesNoise
 			)
 
 			// if (hitEvent.WasMiss)
@@ -538,181 +674,334 @@
 			IL_0028: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
 			IL_002d: ldarg.1
 			IL_002e: callvirt instance void MGSC.Entities::ScheduleDestroy(int32)
-			// ref ProjectileRuntimeData reference = ref _cacheEntities.GetRef<ProjectileRuntimeData>(hitEvent.ProjEntityId);
+			// ref Ballistic reference = ref _cacheEntities.GetRef<Ballistic>(hitEvent.ProjEntityId);
 			IL_0033: ret
 
 			IL_0034: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
 			IL_0039: ldarg.2
 			IL_003a: ldfld int32 MGSC.HitEvent::ProjEntityId
-			IL_003f: callvirt instance !!0& MGSC.Entities::GetRef<valuetype MGSC.ProjectileRuntimeData>(int32)
+			IL_003f: callvirt instance !!0& MGSC.Entities::GetRef<valuetype MGSC.Ballistic>(int32)
 			IL_0044: stloc.0
-			// Creature creature = _cacheCreatures.GetCreature(hitEvent.OwnerUid);
-			IL_0045: ldsfld class MGSC.Creatures MGSC.HitResolveSystem::_cacheCreatures
+			// ref ProjectileRuntimeData reference2 = ref _cacheEntities.GetRef<ProjectileRuntimeData>(hitEvent.ProjEntityId);
+			IL_0045: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
 			IL_004a: ldarg.2
-			IL_004b: ldfld int32 MGSC.HitEvent::OwnerUid
-			IL_0050: callvirt instance class MGSC.Creature MGSC.Creatures::GetCreature(int32)
+			IL_004b: ldfld int32 MGSC.HitEvent::ProjEntityId
+			IL_0050: callvirt instance !!0& MGSC.Entities::GetRef<valuetype MGSC.ProjectileRuntimeData>(int32)
 			IL_0055: stloc.1
+			// Creature creature = _cacheCreatures.GetCreature(hitEvent.OwnerUid);
+			IL_0056: ldsfld class MGSC.Creatures MGSC.HitResolveSystem::_cacheCreatures
+			IL_005b: ldarg.2
+			IL_005c: ldfld int32 MGSC.HitEvent::OwnerUid
+			IL_0061: callvirt instance class MGSC.Creature MGSC.Creatures::GetCreature(int32)
+			IL_0066: stloc.2
 			// if (creature != null)
-			IL_0056: ldloc.1
-			IL_0057: ldnull
-			IL_0058: call bool [UnityEngine.CoreModule]UnityEngine.Object::op_Inequality(class [UnityEngine.CoreModule]UnityEngine.Object, class [UnityEngine.CoreModule]UnityEngine.Object)
-			IL_005d: brfalse IL_01ac
+			IL_0067: ldloc.2
+			IL_0068: ldnull
+			IL_0069: call bool [UnityEngine.CoreModule]UnityEngine.Object::op_Inequality(class [UnityEngine.CoreModule]UnityEngine.Object, class [UnityEngine.CoreModule]UnityEngine.Object)
+			IL_006e: brfalse IL_033f
 
 			// if (PerkSystem.GetPerkParameterSumFloat(creature.CreatureData, "FNoiseSuppression") < Random.Range(0f, 1f))
-			IL_0062: ldloc.1
-			IL_0063: ldfld class MGSC.CreatureData MGSC.Creature::CreatureData
-			IL_0068: ldstr "FNoiseSuppression"
-			IL_006d: ldc.i4.0
-			IL_006e: ldc.i4.0
-			IL_006f: call float32 MGSC.PerkSystem::GetPerkParameterSumFloat(class MGSC.CreatureData, string, valuetype MGSC.WeaponClass, valuetype MGSC.WeaponSubClass)
-			IL_0074: ldc.r4 0.0
-			IL_0079: ldc.r4 1
-			IL_007e: call float32 [UnityEngine.CoreModule]UnityEngine.Random::Range(float32, float32)
-			IL_0083: bge.un.s IL_00be
+			IL_0073: ldloc.2
+			IL_0074: ldfld class MGSC.CreatureData MGSC.Creature::CreatureData
+			IL_0079: ldstr "FNoiseSuppression"
+			IL_007e: ldc.i4.0
+			IL_007f: ldc.i4.0
+			IL_0080: call float32 MGSC.PerkSystem::GetPerkParameterSumFloat(class MGSC.CreatureData, string, valuetype MGSC.WeaponClass, valuetype MGSC.WeaponSubClass)
+			IL_0085: ldc.r4 0.0
+			IL_008a: ldc.r4 1
+			IL_008f: call float32 [UnityEngine.CoreModule]UnityEngine.Random::Range(float32, float32)
+			IL_0094: bge.un.s IL_00e2
 
 			// int entity2 = _cacheEntities.CreateEntity();
-			IL_0085: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
-			IL_008a: callvirt instance int32 MGSC.Entities::CreateEntity()
-			IL_008f: stloc.3
+			IL_0096: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
+			IL_009b: callvirt instance int32 MGSC.Entities::CreateEntity()
+			IL_00a0: stloc.s 4
 			// 			PropagatesNoise comp = new PropagatesNoise
 			// 			{
-			// 				NoiseType = 1,
-			// 				Position = hitEvent.PreviousPosition
+			// 				NoiseType = 2,
+			// 				Position = hitEvent.PreviousPosition,
+			// 				Radius = Data.Global.AggroGunshotRadius
 			// 			};
-			IL_0090: ldloca.s 5
-			IL_0092: initobj MGSC.PropagatesNoise
-			IL_0098: ldloca.s 5
-			IL_009a: ldc.i4.1
-			IL_009b: stfld int32 MGSC.PropagatesNoise::NoiseType
-			IL_00a0: ldloca.s 5
-			IL_00a2: ldarg.2
-			IL_00a3: ldfld valuetype MGSC.CellPosition MGSC.HitEvent::PreviousPosition
-			IL_00a8: stfld valuetype MGSC.CellPosition MGSC.PropagatesNoise::Position
+			IL_00a2: ldloca.s 6
+			IL_00a4: initobj MGSC.PropagatesNoise
+			IL_00aa: ldloca.s 6
+			IL_00ac: ldc.i4.2
+			IL_00ad: stfld int32 MGSC.PropagatesNoise::NoiseType
+			IL_00b2: ldloca.s 6
+			IL_00b4: ldarg.2
+			IL_00b5: ldfld valuetype MGSC.CellPosition MGSC.HitEvent::PreviousPosition
+			IL_00ba: stfld valuetype MGSC.CellPosition MGSC.PropagatesNoise::Position
+			IL_00bf: ldloca.s 6
+			IL_00c1: call class MGSC.GlobalSettings MGSC.Data::get_Global()
+			IL_00c6: callvirt instance int32 MGSC.GlobalSettings::get_AggroGunshotRadius()
+			IL_00cb: stfld int32 MGSC.PropagatesNoise::Radius
 			// _cacheEntities.Add(entity2, comp);
-			IL_00ad: ldloc.s 5
-			IL_00af: stloc.s 4
-			IL_00b1: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
-			IL_00b6: ldloc.3
-			IL_00b7: ldloc.s 4
-			IL_00b9: callvirt instance void MGSC.Entities::Add<valuetype MGSC.PropagatesNoise>(int32, !!0)
+			IL_00d0: ldloc.s 6
+			IL_00d2: stloc.s 5
+			IL_00d4: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
+			IL_00d9: ldloc.s 4
+			IL_00db: ldloc.s 5
+			IL_00dd: callvirt instance void MGSC.Entities::Add<valuetype MGSC.PropagatesNoise>(int32, !!0)
 
-			// if (ItemTraitSystem.TryGetValue<string>(creature.CreatureData.Inventory.CurrentWeapon.Comp<WeaponComponent>().OverridenAmmo.Traits, "SExplosive", out var value))
-			IL_00be: ldloc.1
-			IL_00bf: ldfld class MGSC.CreatureData MGSC.Creature::CreatureData
-			IL_00c4: ldfld class MGSC.Inventory MGSC.CreatureData::Inventory
-			IL_00c9: callvirt instance class MGSC.BasePickupItem MGSC.Inventory::get_CurrentWeapon()
-			IL_00ce: callvirt instance !!0 MGSC.BasePickupItem::Comp<class MGSC.WeaponComponent>()
-			IL_00d3: callvirt instance class MGSC.AmmoRecord MGSC.WeaponComponent::get_OverridenAmmo()
-			IL_00d8: callvirt instance class [mscorlib]System.Collections.Generic.List`1<string> MGSC.AmmoRecord::get_Traits()
-			IL_00dd: ldstr "SExplosive"
-			IL_00e2: ldloca.s 2
-			IL_00e4: call bool MGSC.ItemTraitSystem::TryGetValue<string>(class [mscorlib]System.Collections.Generic.List`1<string>, string, !!0&)
-			IL_00e9: brfalse.s IL_0138
+			// if (reference2.HasShrapnelExplosion)
+			IL_00e2: ldloc.1
+			IL_00e3: ldfld bool MGSC.ProjectileRuntimeData::HasShrapnelExplosion
+			IL_00e8: brfalse.s IL_0133
 
 			// int entity3 = _cacheEntities.CreateEntity();
-			IL_00eb: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
-			IL_00f0: callvirt instance int32 MGSC.Entities::CreateEntity()
-			IL_00f5: stloc.s 6
-			// int explosionTypeId = SharedStringIds.Register(value);
-			IL_00f7: ldloc.2
-			IL_00f8: call int32 MGSC.SharedStringIds::Register(string)
-			IL_00fd: stloc.s 7
+			IL_00ea: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
+			IL_00ef: callvirt instance int32 MGSC.Entities::CreateEntity()
+			IL_00f4: stloc.s 7
 			// 			_cacheEntities.Add(entity3, new ExplosionRequest
+			// 			{
+			// 				Position = hitEvent.HitPosition,
+			// 				ExplosionTypeId = reference2.ShrapnelExplId,
+			// 				OwnerUid = hitEvent.OwnerUid
+			// 			});
+			IL_00f6: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
+			IL_00fb: ldloc.s 7
+			IL_00fd: ldloca.s 8
+			IL_00ff: initobj MGSC.ExplosionRequest
+			IL_0105: ldloca.s 8
+			IL_0107: ldarg.2
+			IL_0108: ldfld valuetype MGSC.CellPosition MGSC.HitEvent::HitPosition
+			IL_010d: stfld valuetype MGSC.CellPosition MGSC.ExplosionRequest::Position
+			IL_0112: ldloca.s 8
+			IL_0114: ldloc.1
+			IL_0115: ldfld int32 MGSC.ProjectileRuntimeData::ShrapnelExplId
+			IL_011a: stfld int32 MGSC.ExplosionRequest::ExplosionTypeId
+			IL_011f: ldloca.s 8
+			IL_0121: ldarg.2
+			IL_0122: ldfld int32 MGSC.HitEvent::OwnerUid
+			IL_0127: stfld int32 MGSC.ExplosionRequest::OwnerUid
+			IL_012c: ldloc.s 8
+			// if (ItemTraitSystem.TryGetValue<string>(creature.CreatureData.Inventory.CurrentWeapon.Comp<WeaponComponent>().OverridenAmmo.Traits, "SExplosive", out var value))
+			IL_012e: callvirt instance void MGSC.Entities::Add<valuetype MGSC.ExplosionRequest>(int32, !!0)
+
+			IL_0133: ldloc.2
+			IL_0134: ldfld class MGSC.CreatureData MGSC.Creature::CreatureData
+			IL_0139: ldfld class MGSC.Inventory MGSC.CreatureData::Inventory
+			IL_013e: callvirt instance class MGSC.BasePickupItem MGSC.Inventory::get_CurrentWeapon()
+			IL_0143: callvirt instance !!0 MGSC.BasePickupItem::Comp<class MGSC.WeaponComponent>()
+			IL_0148: callvirt instance class MGSC.AmmoRecord MGSC.WeaponComponent::get_OverridenAmmo()
+			IL_014d: callvirt instance class [mscorlib]System.Collections.Generic.List`1<string> MGSC.AmmoRecord::get_Traits()
+			IL_0152: ldstr "SExplosive"
+			IL_0157: ldloca.s 3
+			IL_0159: call bool MGSC.ItemTraitSystem::TryGetValue<string>(class [mscorlib]System.Collections.Generic.List`1<string>, string, !!0&)
+			IL_015e: brfalse.s IL_01ad
+
+			// int entity4 = _cacheEntities.CreateEntity();
+			IL_0160: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
+			IL_0165: callvirt instance int32 MGSC.Entities::CreateEntity()
+			IL_016a: stloc.s 9
+			// int explosionTypeId = SharedStringIds.Register(value);
+			IL_016c: ldloc.3
+			IL_016d: call int32 MGSC.SharedStringIds::Register(string)
+			IL_0172: stloc.s 10
+			// 			_cacheEntities.Add(entity4, new ExplosionRequest
 			// 			{
 			// 				Position = hitEvent.HitPosition,
 			// 				ExplosionTypeId = explosionTypeId,
 			// 				OwnerUid = hitEvent.OwnerUid
 			// 			});
-			IL_00ff: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
-			IL_0104: ldloc.s 6
-			IL_0106: ldloca.s 8
-			IL_0108: initobj MGSC.ExplosionRequest
-			IL_010e: ldloca.s 8
-			IL_0110: ldarg.2
-			IL_0111: ldfld valuetype MGSC.CellPosition MGSC.HitEvent::HitPosition
-			IL_0116: stfld valuetype MGSC.CellPosition MGSC.ExplosionRequest::Position
-			IL_011b: ldloca.s 8
-			IL_011d: ldloc.s 7
-			IL_011f: stfld int32 MGSC.ExplosionRequest::ExplosionTypeId
-			IL_0124: ldloca.s 8
-			IL_0126: ldarg.2
-			IL_0127: ldfld int32 MGSC.HitEvent::OwnerUid
-			IL_012c: stfld int32 MGSC.ExplosionRequest::OwnerUid
-			IL_0131: ldloc.s 8
-			// if (reference.ProjectileExplosionChance > 0f && reference.ProjectileExplosionChance > Random.Range(0f, 1f))
-			IL_0133: callvirt instance void MGSC.Entities::Add<valuetype MGSC.ExplosionRequest>(int32, !!0)
+			IL_0174: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
+			IL_0179: ldloc.s 9
+			IL_017b: ldloca.s 8
+			IL_017d: initobj MGSC.ExplosionRequest
+			IL_0183: ldloca.s 8
+			IL_0185: ldarg.2
+			IL_0186: ldfld valuetype MGSC.CellPosition MGSC.HitEvent::HitPosition
+			IL_018b: stfld valuetype MGSC.CellPosition MGSC.ExplosionRequest::Position
+			IL_0190: ldloca.s 8
+			IL_0192: ldloc.s 10
+			IL_0194: stfld int32 MGSC.ExplosionRequest::ExplosionTypeId
+			IL_0199: ldloca.s 8
+			IL_019b: ldarg.2
+			IL_019c: ldfld int32 MGSC.HitEvent::OwnerUid
+			IL_01a1: stfld int32 MGSC.ExplosionRequest::OwnerUid
+			IL_01a6: ldloc.s 8
+			// if (reference2.ProjectileExplosionChance > 0f && reference2.ProjectileExplosionChance > Random.Range(0f, 1f))
+			IL_01a8: callvirt instance void MGSC.Entities::Add<valuetype MGSC.ExplosionRequest>(int32, !!0)
 
-			IL_0138: ldloc.0
-			IL_0139: ldfld float32 MGSC.ProjectileRuntimeData::ProjectileExplosionChance
-			IL_013e: ldc.r4 0.0
-			IL_0143: ble.un IL_01e7
+			IL_01ad: ldloc.1
+			IL_01ae: ldfld float32 MGSC.ProjectileRuntimeData::ProjectileExplosionChance
+			IL_01b3: ldc.r4 0.0
+			IL_01b8: ble.un.s IL_021a
 
-			IL_0148: ldloc.0
-			IL_0149: ldfld float32 MGSC.ProjectileRuntimeData::ProjectileExplosionChance
-			IL_014e: ldc.r4 0.0
-			IL_0153: ldc.r4 1
-			IL_0158: call float32 [UnityEngine.CoreModule]UnityEngine.Random::Range(float32, float32)
-			IL_015d: ble.un IL_01e7
+			IL_01ba: ldloc.1
+			IL_01bb: ldfld float32 MGSC.ProjectileRuntimeData::ProjectileExplosionChance
+			IL_01c0: ldc.r4 0.0
+			IL_01c5: ldc.r4 1
+			IL_01ca: call float32 [UnityEngine.CoreModule]UnityEngine.Random::Range(float32, float32)
+			IL_01cf: ble.un.s IL_021a
 
-			// int entity4 = _cacheEntities.CreateEntity();
-			IL_0162: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
-			IL_0167: callvirt instance int32 MGSC.Entities::CreateEntity()
-			IL_016c: stloc.s 9
-			// 			_cacheEntities.Add(entity4, new ExplosionRequest
+			// int entity5 = _cacheEntities.CreateEntity();
+			IL_01d1: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
+			IL_01d6: callvirt instance int32 MGSC.Entities::CreateEntity()
+			IL_01db: stloc.s 11
+			// 			_cacheEntities.Add(entity5, new ExplosionRequest
 			// 			{
 			// 				Position = hitEvent.HitPosition,
-			// 				ExplosionTypeId = reference.ProjectileExplosionId,
+			// 				ExplosionTypeId = reference2.ProjectileExplosionId,
 			// 				OwnerUid = hitEvent.OwnerUid
 			// 			});
-			IL_016e: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
-			IL_0173: ldloc.s 9
-			IL_0175: ldloca.s 8
-			IL_0177: initobj MGSC.ExplosionRequest
-			IL_017d: ldloca.s 8
-			IL_017f: ldarg.2
-			IL_0180: ldfld valuetype MGSC.CellPosition MGSC.HitEvent::HitPosition
-			IL_0185: stfld valuetype MGSC.CellPosition MGSC.ExplosionRequest::Position
-			IL_018a: ldloca.s 8
-			IL_018c: ldloc.0
-			IL_018d: ldfld int32 MGSC.ProjectileRuntimeData::ProjectileExplosionId
-			IL_0192: stfld int32 MGSC.ExplosionRequest::ExplosionTypeId
-			IL_0197: ldloca.s 8
-			IL_0199: ldarg.2
-			IL_019a: ldfld int32 MGSC.HitEvent::OwnerUid
-			IL_019f: stfld int32 MGSC.ExplosionRequest::OwnerUid
-			IL_01a4: ldloc.s 8
-			// (no C# code)
-			IL_01a6: callvirt instance void MGSC.Entities::Add<valuetype MGSC.ExplosionRequest>(int32, !!0)
-			// int entity5 = _cacheEntities.CreateEntity();
-			IL_01ab: ret
+			IL_01dd: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
+			IL_01e2: ldloc.s 11
+			IL_01e4: ldloca.s 8
+			IL_01e6: initobj MGSC.ExplosionRequest
+			IL_01ec: ldloca.s 8
+			IL_01ee: ldarg.2
+			IL_01ef: ldfld valuetype MGSC.CellPosition MGSC.HitEvent::HitPosition
+			IL_01f4: stfld valuetype MGSC.CellPosition MGSC.ExplosionRequest::Position
+			IL_01f9: ldloca.s 8
+			IL_01fb: ldloc.1
+			IL_01fc: ldfld int32 MGSC.ProjectileRuntimeData::ProjectileExplosionId
+			IL_0201: stfld int32 MGSC.ExplosionRequest::ExplosionTypeId
+			IL_0206: ldloca.s 8
+			IL_0208: ldarg.2
+			IL_0209: ldfld int32 MGSC.HitEvent::OwnerUid
+			IL_020e: stfld int32 MGSC.ExplosionRequest::OwnerUid
+			IL_0213: ldloc.s 8
+			// if (_cacheEntities.Has<CollisionWithCreature>(entity))
+			IL_0215: callvirt instance void MGSC.Entities::Add<valuetype MGSC.ExplosionRequest>(int32, !!0)
 
-			IL_01ac: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
-			IL_01b1: callvirt instance int32 MGSC.Entities::CreateEntity()
-			IL_01b6: stloc.s 10
-			// 		PropagatesNoise comp2 = new PropagatesNoise
+			IL_021a: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
+			IL_021f: ldarg.1
+			IL_0220: callvirt instance bool MGSC.Entities::Has<valuetype MGSC.CollisionWithCreature>(int32)
+			IL_0225: brfalse IL_038b
+
+			// ref CollisionWithCreature reference3 = ref _cacheEntities.GetRef<CollisionWithCreature>(entity);
+			IL_022a: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
+			IL_022f: ldarg.1
+			IL_0230: callvirt instance !!0& MGSC.Entities::GetRef<valuetype MGSC.CollisionWithCreature>(int32)
+			IL_0235: stloc.s 12
+			// Creature creature2 = _cacheCreatures.GetCreature(reference3.CreatureUid);
+			IL_0237: ldsfld class MGSC.Creatures MGSC.HitResolveSystem::_cacheCreatures
+			IL_023c: ldloc.s 12
+			IL_023e: ldfld int32 MGSC.CollisionWithCreature::CreatureUid
+			IL_0243: callvirt instance class MGSC.Creature MGSC.Creatures::GetCreature(int32)
+			IL_0248: stloc.s 13
+			// if (creature2 != null && creature2.CreatureData.EffectsController.HasAnyEffect<BloodMirrorBuff>())
+			IL_024a: ldloc.s 13
+			IL_024c: ldnull
+			IL_024d: call bool [UnityEngine.CoreModule]UnityEngine.Object::op_Inequality(class [UnityEngine.CoreModule]UnityEngine.Object, class [UnityEngine.CoreModule]UnityEngine.Object)
+			IL_0252: brfalse IL_038b
+
+			IL_0257: ldloc.s 13
+			IL_0259: ldfld class MGSC.CreatureData MGSC.Creature::CreatureData
+			IL_025e: ldfld class MGSC.EffectsController MGSC.CreatureData::EffectsController
+			IL_0263: callvirt instance bool MGSC.EffectsController::HasAnyEffect<class MGSC.BloodMirrorBuff>()
+			IL_0268: brfalse IL_038b
+
+			// int num = _cacheEntities.CreateEntity();
+			IL_026d: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
+			IL_0272: callvirt instance int32 MGSC.Entities::CreateEntity()
+			IL_0277: stloc.s 14
+			// CellPosition hitPosition = hitEvent.HitPosition;
+			IL_0279: ldarg.2
+			IL_027a: ldfld valuetype MGSC.CellPosition MGSC.HitEvent::HitPosition
+			IL_027f: stloc.s 15
+			// CellPosition initialPosition = reference.InitialPosition;
+			IL_0281: ldloc.0
+			IL_0282: ldfld valuetype MGSC.CellPosition MGSC.Ballistic::InitialPosition
+			IL_0287: stloc.s 16
+			// Vector2 vector = _cacheMapRenderer.CoordsToPositionCenterPivot(hitPosition);
+			IL_0289: ldsfld class MGSC.MapRenderer MGSC.HitResolveSystem::_cacheMapRenderer
+			IL_028e: ldloc.s 15
+			IL_0290: callvirt instance valuetype [UnityEngine.CoreModule]UnityEngine.Vector2 MGSC.MapRenderer::CoordsToPositionCenterPivot(valuetype MGSC.CellPosition)
+			IL_0295: stloc.s 17
+			// Ballistic comp2 = BallisticSystem.CreateBallistic(_cacheMapGrid, hitPosition, initialPosition, vector, reference2.Speed, 0f, reference.MaxDistance, 0, isPreciseTarget: true);
+			IL_0297: ldsfld class MGSC.MapGrid MGSC.HitResolveSystem::_cacheMapGrid
+			IL_029c: ldloc.s 15
+			IL_029e: ldloc.s 16
+			IL_02a0: ldloc.s 17
+			IL_02a2: call valuetype [UnityEngine.CoreModule]UnityEngine.Vector3 [UnityEngine.CoreModule]UnityEngine.Vector2::op_Implicit(valuetype [UnityEngine.CoreModule]UnityEngine.Vector2)
+			IL_02a7: ldloc.1
+			IL_02a8: ldfld float32 MGSC.ProjectileRuntimeData::Speed
+			IL_02ad: ldc.r4 0.0
+			IL_02b2: ldloc.0
+			IL_02b3: ldfld int32 MGSC.Ballistic::MaxDistance
+			IL_02b8: ldc.i4.0
+			IL_02b9: ldc.i4.1
+			IL_02ba: call valuetype MGSC.Ballistic MGSC.BallisticSystem::CreateBallistic(class MGSC.MapGrid, valuetype MGSC.CellPosition, valuetype MGSC.CellPosition, valuetype [UnityEngine.CoreModule]UnityEngine.Vector3, float32, float32, int32, int32, bool)
+			IL_02bf: stloc.s 18
+			// comp2.OwnerUid = hitEvent.OwnerUid;
+			IL_02c1: ldloca.s 18
+			IL_02c3: ldarg.2
+			IL_02c4: ldfld int32 MGSC.HitEvent::OwnerUid
+			IL_02c9: stfld int32 MGSC.Ballistic::OwnerUid
+			// _cacheEntities.Add(num, comp2);
+			IL_02ce: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
+			IL_02d3: ldloc.s 14
+			IL_02d5: ldloc.s 18
+			IL_02d7: callvirt instance void MGSC.Entities::Add<valuetype MGSC.Ballistic>(int32, !!0)
+			// _cacheEntities.Add(num, reference2);
+			IL_02dc: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
+			IL_02e1: ldloc.s 14
+			IL_02e3: ldloc.1
+			IL_02e4: ldobj MGSC.ProjectileRuntimeData
+			IL_02e9: callvirt instance void MGSC.Entities::Add<valuetype MGSC.ProjectileRuntimeData>(int32, !!0)
+			// ProjectileView bullet = (Data.Projectiles.GetRecord(SharedStringIds.Get(reference2.ProjectileId)).ContentDescriptor as ProjectileDescriptor).Bullet;
+			IL_02ee: call class MGSC.ConfigRecordCollection`1<class MGSC.ProjectileRecord> MGSC.Data::get_Projectiles()
+			IL_02f3: ldloc.1
+			IL_02f4: ldfld int32 MGSC.ProjectileRuntimeData::ProjectileId
+			IL_02f9: call string MGSC.SharedStringIds::Get(int32)
+			IL_02fe: ldc.i4.1
+			IL_02ff: callvirt instance !0 class MGSC.ConfigRecordCollection`1<class MGSC.ProjectileRecord>::GetRecord(string, bool)
+			IL_0304: callvirt instance class [UnityEngine.CoreModule]UnityEngine.Object MGSC.ConfigTableRecord::get_ContentDescriptor()
+			IL_0309: isinst MGSC.ProjectileDescriptor
+			IL_030e: callvirt instance class MGSC.ProjectileView MGSC.ProjectileDescriptor::get_Bullet()
+			IL_0313: stloc.s 19
+			// SingletonMonoBehaviour<BulletFactory>.Instance.SpawnBullet(vector, hitPosition, bullet, num);
+			IL_0315: call !0 class MGSC.SingletonMonoBehaviour`1<class MGSC.BulletFactory>::get_Instance()
+			IL_031a: ldloc.s 17
+			IL_031c: call valuetype [UnityEngine.CoreModule]UnityEngine.Vector3 [UnityEngine.CoreModule]UnityEngine.Vector2::op_Implicit(valuetype [UnityEngine.CoreModule]UnityEngine.Vector2)
+			IL_0321: ldloc.s 15
+			IL_0323: ldloc.s 19
+			IL_0325: ldloc.s 14
+			IL_0327: ldnull
+			IL_0328: callvirt instance class MGSC.ProjectileView MGSC.BulletFactory::SpawnBullet(valuetype [UnityEngine.CoreModule]UnityEngine.Vector3, valuetype MGSC.CellPosition, class MGSC.ProjectileView, int32, class [mscorlib]System.Collections.Generic.List`1<valuetype MGSC.CellPosition>)
+			IL_032d: pop
+			// _cacheEntities.ScheduleDestroy(hitEvent.ProjEntityId);
+			IL_032e: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
+			IL_0333: ldarg.2
+			IL_0334: ldfld int32 MGSC.HitEvent::ProjEntityId
+			IL_0339: callvirt instance void MGSC.Entities::ScheduleDestroy(int32)
+			// int entity6 = _cacheEntities.CreateEntity();
+			IL_033e: ret
+
+			IL_033f: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
+			IL_0344: callvirt instance int32 MGSC.Entities::CreateEntity()
+			IL_0349: stloc.s 20
+			// 		PropagatesNoise comp3 = new PropagatesNoise
 			// 		{
-			// 			NoiseType = 1,
-			// 			Position = hitEvent.PreviousPosition
+			// 			NoiseType = 2,
+			// 			Position = hitEvent.PreviousPosition,
+			// 			Radius = Data.Global.AggroGunshotRadius
 			// 		};
-			IL_01b8: ldloca.s 5
-			IL_01ba: initobj MGSC.PropagatesNoise
-			IL_01c0: ldloca.s 5
-			IL_01c2: ldc.i4.1
-			IL_01c3: stfld int32 MGSC.PropagatesNoise::NoiseType
-			IL_01c8: ldloca.s 5
-			IL_01ca: ldarg.2
-			IL_01cb: ldfld valuetype MGSC.CellPosition MGSC.HitEvent::PreviousPosition
-			IL_01d0: stfld valuetype MGSC.CellPosition MGSC.PropagatesNoise::Position
-			// _cacheEntities.Add(entity5, comp2);
-			IL_01d5: ldloc.s 5
-			IL_01d7: stloc.s 11
-			IL_01d9: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
-			IL_01de: ldloc.s 10
-			IL_01e0: ldloc.s 11
-			IL_01e2: callvirt instance void MGSC.Entities::Add<valuetype MGSC.PropagatesNoise>(int32, !!0)
+			IL_034b: ldloca.s 6
+			IL_034d: initobj MGSC.PropagatesNoise
+			IL_0353: ldloca.s 6
+			IL_0355: ldc.i4.2
+			IL_0356: stfld int32 MGSC.PropagatesNoise::NoiseType
+			IL_035b: ldloca.s 6
+			IL_035d: ldarg.2
+			IL_035e: ldfld valuetype MGSC.CellPosition MGSC.HitEvent::PreviousPosition
+			IL_0363: stfld valuetype MGSC.CellPosition MGSC.PropagatesNoise::Position
+			IL_0368: ldloca.s 6
+			IL_036a: call class MGSC.GlobalSettings MGSC.Data::get_Global()
+			IL_036f: callvirt instance int32 MGSC.GlobalSettings::get_AggroGunshotRadius()
+			IL_0374: stfld int32 MGSC.PropagatesNoise::Radius
+			// _cacheEntities.Add(entity6, comp3);
+			IL_0379: ldloc.s 6
+			IL_037b: stloc.s 21
+			IL_037d: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
+			IL_0382: ldloc.s 20
+			IL_0384: ldloc.s 21
+			IL_0386: callvirt instance void MGSC.Entities::Add<valuetype MGSC.PropagatesNoise>(int32, !!0)
 
 			// (no C# code)
-			IL_01e7: ret
+			IL_038b: ret
 		} // end of method '<>c'::'<CreateHitConsequences>b__10_0'
 
 		.method assembly hidebysig 
@@ -721,9 +1010,9 @@
 				valuetype MGSC.ExplosionRequest& explosion
 			) cil managed 
 		{
-			// Method begins at RVA 0x13abec
+			// Method begins at RVA 0x17c5fc
 			// Header size: 12
-			// Code size: 411 (0x19b)
+			// Code size: 422 (0x1a6)
 			.maxstack 6
 			.locals init (
 				[0] string,
@@ -786,9 +1075,9 @@
 			IL_006a: ldfld valuetype MGSC.CellPosition MGSC.ExplosionRequest::Position
 			IL_006f: ldc.i4.1
 			IL_0070: callvirt instance class MGSC.MapCell MGSC.MapGrid::GetCell(valuetype MGSC.CellPosition, bool)
-			IL_0075: ldfld valuetype MGSC.MapCellType MGSC.MapCell::Type
+			IL_0075: callvirt instance valuetype MGSC.MapCellType MGSC.MapCell::get_Type()
 			IL_007a: ldc.i4.5
-			IL_007b: beq IL_018f
+			IL_007b: beq IL_019a
 
 			// Vector3 vector = _cacheMapRenderer.CoordsToPositionCenterPivot(explosion.Position);
 			IL_0080: ldsfld class MGSC.MapRenderer MGSC.HitResolveSystem::_cacheMapRenderer
@@ -842,60 +1131,69 @@
 			IL_0108: ldfld int32 MGSC.ExplosionRequest::OwnerUid
 			IL_010d: callvirt instance class MGSC.Creature MGSC.Creatures::GetCreature(int32)
 			IL_0112: stloc.s 6
+			// if (creature == null)
+			IL_0114: ldloc.s 6
+			IL_0116: ldnull
+			IL_0117: call bool [UnityEngine.CoreModule]UnityEngine.Object::op_Equality(class [UnityEngine.CoreModule]UnityEngine.Object, class [UnityEngine.CoreModule]UnityEngine.Object)
+			IL_011c: brfalse.s IL_011f
+
+			// return;
+			IL_011e: ret
+
 			// ExplosionEntity.ExplosionParameters parameters = record.Parameters;
-			IL_0114: ldloc.1
-			IL_0115: callvirt instance valuetype MGSC.ExplosionEntity/ExplosionParameters MGSC.ExplosionRecord::get_Parameters()
-			IL_011a: stloc.s 7
+			IL_011f: ldloc.1
+			IL_0120: callvirt instance valuetype MGSC.ExplosionEntity/ExplosionParameters MGSC.ExplosionRecord::get_Parameters()
+			IL_0125: stloc.s 7
 			// parameters.Damage = Mathf.RoundToInt((float)parameters.Damage * creature.CreatureData.GrenadeDamageMult);
-			IL_011c: ldloca.s 7
-			IL_011e: ldloc.s 7
-			IL_0120: ldfld int32 MGSC.ExplosionEntity/ExplosionParameters::Damage
-			IL_0125: conv.r4
-			IL_0126: ldloc.s 6
-			IL_0128: ldfld class MGSC.CreatureData MGSC.Creature::CreatureData
-			IL_012d: ldfld float32 MGSC.CreatureData::GrenadeDamageMult
-			IL_0132: mul
-			IL_0133: call int32 [UnityEngine.CoreModule]UnityEngine.Mathf::RoundToInt(float32)
-			IL_0138: stfld int32 MGSC.ExplosionEntity/ExplosionParameters::Damage
+			IL_0127: ldloca.s 7
+			IL_0129: ldloc.s 7
+			IL_012b: ldfld int32 MGSC.ExplosionEntity/ExplosionParameters::Damage
+			IL_0130: conv.r4
+			IL_0131: ldloc.s 6
+			IL_0133: ldfld class MGSC.CreatureData MGSC.Creature::CreatureData
+			IL_0138: ldfld float32 MGSC.CreatureData::GrenadeDamageMult
+			IL_013d: mul
+			IL_013e: call int32 [UnityEngine.CoreModule]UnityEngine.Mathf::RoundToInt(float32)
+			IL_0143: stfld int32 MGSC.ExplosionEntity/ExplosionParameters::Damage
 			// parameters.IsPlayerFire = creature is Player;
-			IL_013d: ldloca.s 7
-			IL_013f: ldloc.s 6
-			IL_0141: isinst MGSC.Player
-			IL_0146: ldnull
-			IL_0147: cgt.un
-			IL_0149: stfld bool MGSC.ExplosionEntity/ExplosionParameters::IsPlayerFire
+			IL_0148: ldloca.s 7
+			IL_014a: ldloc.s 6
+			IL_014c: isinst MGSC.Player
+			IL_0151: ldnull
+			IL_0152: cgt.un
+			IL_0154: stfld bool MGSC.ExplosionEntity/ExplosionParameters::IsPlayerFire
 			// SingletonMonoBehaviour<ExplosionFactory>.Instance.CreateExplosion(explosion.Position, parameters, visualParameters, creature).ExplodeNow();
-			IL_014e: call !0 class MGSC.SingletonMonoBehaviour`1<class MGSC.ExplosionFactory>::get_Instance()
-			IL_0153: ldarg.2
-			IL_0154: ldfld valuetype MGSC.CellPosition MGSC.ExplosionRequest::Position
-			IL_0159: ldloc.s 7
-			IL_015b: ldloc.3
-			IL_015c: ldloc.s 6
-			IL_015e: callvirt instance class MGSC.ExplosionEntity MGSC.ExplosionFactory::CreateExplosion(valuetype MGSC.CellPosition, valuetype MGSC.ExplosionEntity/ExplosionParameters, valuetype MGSC.ExplosionEntity/ExplosionVisualParameters, class MGSC.Creature)
-			IL_0163: callvirt instance void MGSC.ExplosionEntity::ExplodeNow()
+			IL_0159: call !0 class MGSC.SingletonMonoBehaviour`1<class MGSC.ExplosionFactory>::get_Instance()
+			IL_015e: ldarg.2
+			IL_015f: ldfld valuetype MGSC.CellPosition MGSC.ExplosionRequest::Position
+			IL_0164: ldloc.s 7
+			IL_0166: ldloc.3
+			IL_0167: ldloc.s 6
+			IL_0169: callvirt instance class MGSC.ExplosionEntity MGSC.ExplosionFactory::CreateExplosion(valuetype MGSC.CellPosition, valuetype MGSC.ExplosionEntity/ExplosionParameters, valuetype MGSC.ExplosionEntity/ExplosionVisualParameters, class MGSC.Creature)
+			IL_016e: callvirt instance void MGSC.ExplosionEntity::ExplodeNow()
 			// if (visualParameters.ExpSoundBank != null)
-			IL_0168: ldloc.3
-			IL_0169: ldfld class MGSC.SoundBank MGSC.ExplosionEntity/ExplosionVisualParameters::ExpSoundBank
-			IL_016e: ldnull
-			IL_016f: call bool [UnityEngine.CoreModule]UnityEngine.Object::op_Inequality(class [UnityEngine.CoreModule]UnityEngine.Object, class [UnityEngine.CoreModule]UnityEngine.Object)
-			IL_0174: brfalse.s IL_018f
+			IL_0173: ldloc.3
+			IL_0174: ldfld class MGSC.SoundBank MGSC.ExplosionEntity/ExplosionVisualParameters::ExpSoundBank
+			IL_0179: ldnull
+			IL_017a: call bool [UnityEngine.CoreModule]UnityEngine.Object::op_Inequality(class [UnityEngine.CoreModule]UnityEngine.Object, class [UnityEngine.CoreModule]UnityEngine.Object)
+			IL_017f: brfalse.s IL_019a
 
 			// SingletonMonoBehaviour<SoundController>.Instance.PlaySound(vector, visualParameters.ExpSoundBank);
-			IL_0176: call !0 class MGSC.SingletonMonoBehaviour`1<class MGSC.SoundController>::get_Instance()
-			IL_017b: ldloc.s 5
-			IL_017d: ldloc.3
-			IL_017e: ldfld class MGSC.SoundBank MGSC.ExplosionEntity/ExplosionVisualParameters::ExpSoundBank
-			IL_0183: ldc.i4.0
-			IL_0184: ldc.i4.0
-			IL_0185: ldc.r4 0.0
-			IL_018a: callvirt instance void MGSC.SoundController::PlaySound(valuetype [UnityEngine.CoreModule]UnityEngine.Vector3, class MGSC.SoundBank, bool, bool, float32)
+			IL_0181: call !0 class MGSC.SingletonMonoBehaviour`1<class MGSC.SoundController>::get_Instance()
+			IL_0186: ldloc.s 5
+			IL_0188: ldloc.3
+			IL_0189: ldfld class MGSC.SoundBank MGSC.ExplosionEntity/ExplosionVisualParameters::ExpSoundBank
+			IL_018e: ldc.i4.0
+			IL_018f: ldc.i4.0
+			IL_0190: ldc.r4 0.0
+			IL_0195: callvirt instance void MGSC.SoundController::PlaySound(valuetype [UnityEngine.CoreModule]UnityEngine.Vector3, class MGSC.SoundBank, bool, bool, float32)
 
 			// _cacheEntities.ScheduleDestroy(e);
-			IL_018f: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
-			IL_0194: ldarg.1
-			IL_0195: callvirt instance void MGSC.Entities::ScheduleDestroy(int32)
+			IL_019a: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
+			IL_019f: ldarg.1
+			IL_01a0: callvirt instance void MGSC.Entities::ScheduleDestroy(int32)
 			// }
-			IL_019a: ret
+			IL_01a5: ret
 		} // end of method '<>c'::'<ProcessExplosion>b__11_0'
 
 		.method assembly hidebysig 
@@ -904,16 +1202,20 @@
 				valuetype MGSC.HitEvent& hitEvent
 			) cil managed 
 		{
-			// Method begins at RVA 0x13ad94
+			// Method begins at RVA 0x17c7b0
 			// Header size: 12
-			// Code size: 135 (0x87)
-			.maxstack 3
+			// Code size: 270 (0x10e)
+			.maxstack 5
 			.locals init (
 				[0] valuetype MGSC.CollisionWithObstacle&,
-				[1] float32
+				[1] valuetype MGSC.ProjectileRuntimeData&,
+				[2] float32,
+				[3] string,
+				[4] class MGSC.MapObstacle,
+				[5] class MGSC.BasePickupItem
 			)
 
-			// if (_cacheEntities.IsAlive(hitEvent.ProjEntityId) && !hitEvent.WasMiss)
+			// if (!_cacheEntities.IsAlive(hitEvent.ProjEntityId) || hitEvent.WasMiss)
 			IL_0000: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
 			IL_0005: ldarg.2
 			IL_0006: ldfld int32 MGSC.HitEvent::ProjEntityId
@@ -935,47 +1237,107 @@
 			IL_0021: ldarg.1
 			IL_0022: callvirt instance !!0& MGSC.Entities::GetRef<valuetype MGSC.CollisionWithObstacle>(int32)
 			IL_0027: stloc.0
-			// float num = _cacheEntities.GetRef<ProjectileRuntimeData>(hitEvent.ProjEntityId).PierceChance - reference.PierceBlock;
+			// ref ProjectileRuntimeData reference2 = ref _cacheEntities.GetRef<ProjectileRuntimeData>(hitEvent.ProjEntityId);
 			IL_0028: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
 			IL_002d: ldarg.2
 			IL_002e: ldfld int32 MGSC.HitEvent::ProjEntityId
 			IL_0033: callvirt instance !!0& MGSC.Entities::GetRef<valuetype MGSC.ProjectileRuntimeData>(int32)
-			IL_0038: ldfld float32 MGSC.ProjectileRuntimeData::PierceChance
-			IL_003d: ldloc.0
-			IL_003e: ldfld float32 MGSC.CollisionWithObstacle::PierceBlock
-			IL_0043: sub
-			IL_0044: stloc.1
+			IL_0038: stloc.1
+			// float num = reference2.PierceChance - reference.PierceBlock;
+			IL_0039: ldloc.1
+			IL_003a: ldfld float32 MGSC.ProjectileRuntimeData::PierceChance
+			IL_003f: ldloc.0
+			IL_0040: ldfld float32 MGSC.CollisionWithObstacle::PierceBlock
+			IL_0045: sub
+			IL_0046: stloc.2
 			// hitEvent.WasPierced = reference.PierceBlock == 0f || Random.Range(0f, 1f) < num;
-			IL_0045: ldarg.2
-			IL_0046: ldloc.0
-			IL_0047: ldfld float32 MGSC.CollisionWithObstacle::PierceBlock
-			IL_004c: ldc.r4 0.0
-			IL_0051: beq.s IL_0067
+			IL_0047: ldarg.2
+			IL_0048: ldloc.0
+			IL_0049: ldfld float32 MGSC.CollisionWithObstacle::PierceBlock
+			IL_004e: ldc.r4 0.0
+			IL_0053: beq.s IL_0069
 
-			IL_0053: ldc.r4 0.0
-			IL_0058: ldc.r4 1
-			IL_005d: call float32 [UnityEngine.CoreModule]UnityEngine.Random::Range(float32, float32)
-			IL_0062: ldloc.1
-			IL_0063: clt
-			IL_0065: br.s IL_0068
+			IL_0055: ldc.r4 0.0
+			IL_005a: ldc.r4 1
+			IL_005f: call float32 [UnityEngine.CoreModule]UnityEngine.Random::Range(float32, float32)
+			IL_0064: ldloc.2
+			IL_0065: clt
+			IL_0067: br.s IL_006a
 
-			IL_0067: ldc.i4.1
+			IL_0069: ldc.i4.1
 
-			IL_0068: stfld bool MGSC.HitEvent::WasPierced
-			// if (!hitEvent.WasPierced)
-			IL_006d: ldarg.2
-			IL_006e: ldfld bool MGSC.HitEvent::WasPierced
-			IL_0073: brfalse.s IL_0076
+			IL_006a: stfld bool MGSC.HitEvent::WasPierced
+			// if (hitEvent.WasPierced)
+			IL_006f: ldarg.2
+			IL_0070: ldfld bool MGSC.HitEvent::WasPierced
+			IL_0075: brfalse.s IL_0078
+
+			// if (reference2.AmmoId != 0)
+			IL_0077: ret
+
+			IL_0078: ldloc.1
+			IL_0079: ldfld int32 MGSC.ProjectileRuntimeData::AmmoId
+			IL_007e: brfalse.s IL_00fd
+
+			// string itemId = SharedStringIds.Get(reference2.AmmoId);
+			IL_0080: ldloc.1
+			IL_0081: ldfld int32 MGSC.ProjectileRuntimeData::AmmoId
+			IL_0086: call string MGSC.SharedStringIds::Get(int32)
+			IL_008b: stloc.3
+			// MapObstacle mapObstacle = _cacheMapObstacles.Get(reference.ObstacleUid);
+			IL_008c: ldsfld class MGSC.MapObstacles MGSC.HitResolveSystem::_cacheMapObstacles
+			IL_0091: ldloc.0
+			IL_0092: ldfld int32 MGSC.CollisionWithObstacle::ObstacleUid
+			IL_0097: callvirt instance class MGSC.MapObstacle MGSC.MapObstacles::Get(int32)
+			IL_009c: stloc.s 4
+			// if (mapObstacle != null && mapObstacle.Store != null && mapObstacle.Store.AbsorbBullets)
+			IL_009e: ldloc.s 4
+			IL_00a0: ldnull
+			IL_00a1: call bool [UnityEngine.CoreModule]UnityEngine.Object::op_Inequality(class [UnityEngine.CoreModule]UnityEngine.Object, class [UnityEngine.CoreModule]UnityEngine.Object)
+			IL_00a6: brfalse.s IL_00fd
+
+			IL_00a8: ldloc.s 4
+			IL_00aa: callvirt instance class MGSC.Store MGSC.MapObstacle::get_Store()
+			IL_00af: ldnull
+			IL_00b0: call bool [UnityEngine.CoreModule]UnityEngine.Object::op_Inequality(class [UnityEngine.CoreModule]UnityEngine.Object, class [UnityEngine.CoreModule]UnityEngine.Object)
+			IL_00b5: brfalse.s IL_00fd
+
+			// BasePickupItem basePickupItem = SingletonMonoBehaviour<ItemFactory>.Instance.CreateForInventory(itemId);
+			IL_00b7: ldloc.s 4
+			IL_00b9: callvirt instance class MGSC.Store MGSC.MapObstacle::get_Store()
+			IL_00be: callvirt instance bool MGSC.Store::get_AbsorbBullets()
+			IL_00c3: brfalse.s IL_00fd
+
+			IL_00c5: call !0 class MGSC.SingletonMonoBehaviour`1<class MGSC.ItemFactory>::get_Instance()
+			IL_00ca: ldloc.3
+			IL_00cb: ldc.i4.0
+			IL_00cc: callvirt instance class MGSC.BasePickupItem MGSC.ItemFactory::CreateForInventory(string, bool)
+			IL_00d1: stloc.s 5
+			// basePickupItem.StackCount = 1;
+			IL_00d3: ldloc.s 5
+			IL_00d5: ldc.i4.1
+			IL_00d6: callvirt instance void MGSC.BasePickupItem::set_StackCount(int16)
+			// mapObstacle.Store.storage.TryPutItem(basePickupItem, CellPosition.Zero);
+			IL_00db: ldloc.s 4
+			IL_00dd: callvirt instance class MGSC.Store MGSC.MapObstacle::get_Store()
+			IL_00e2: ldfld class MGSC.ItemStorage MGSC.Store::'storage'
+			IL_00e7: ldloc.s 5
+			IL_00e9: ldsfld valuetype MGSC.CellPosition MGSC.CellPosition::Zero
+			IL_00ee: ldc.i4.0
+			IL_00ef: ldc.i4.1
+			IL_00f0: callvirt instance bool MGSC.ItemStorage::TryPutItem(class MGSC.BasePickupItem, valuetype MGSC.CellPosition, bool, bool)
+			IL_00f5: pop
+			// mapObstacle.RefreshVisual();
+			IL_00f6: ldloc.s 4
+			IL_00f8: callvirt instance void MGSC.MapObstacle::RefreshVisual()
 
 			// _cacheEntities.ScheduleDestroy(hitEvent.ProjEntityId);
-			IL_0075: ret
-
-			IL_0076: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
-			IL_007b: ldarg.2
-			IL_007c: ldfld int32 MGSC.HitEvent::ProjEntityId
-			IL_0081: callvirt instance void MGSC.Entities::ScheduleDestroy(int32)
+			IL_00fd: ldsfld class MGSC.Entities MGSC.HitResolveSystem::_cacheEntities
+			IL_0102: ldarg.2
+			IL_0103: ldfld int32 MGSC.HitEvent::ProjEntityId
+			IL_0108: callvirt instance void MGSC.Entities::ScheduleDestroy(int32)
 			// (no C# code)
-			IL_0086: ret
+			IL_010d: ret
 		} // end of method '<>c'::'<ProcessObstaclePierce>b__12_0'
 
 		.method assembly hidebysig 
@@ -984,7 +1346,7 @@
 				valuetype MGSC.HitEvent& hitEvent
 			) cil managed 
 		{
-			// Method begins at RVA 0x13ae28
+			// Method begins at RVA 0x17c8cc
 			// Header size: 12
 			// Code size: 111 (0x6f)
 			.maxstack 3
@@ -1050,7 +1412,7 @@
 				valuetype MGSC.HitEvent& hitEvent
 			) cil managed 
 		{
-			// Method begins at RVA 0x13aea4
+			// Method begins at RVA 0x17c948
 			// Header size: 12
 			// Code size: 288 (0x120)
 			.maxstack 4
@@ -1198,7 +1560,7 @@
 				valuetype MGSC.HitEvent& _
 			) cil managed 
 		{
-			// Method begins at RVA 0x13afd0
+			// Method begins at RVA 0x17ca74
 			// Header size: 1
 			// Code size: 12 (0xc)
 			.maxstack 8
@@ -1240,7 +1602,7 @@
 			73 69 6f 6e 53 79 73 74 65 6d 2e 55 70 64 61 74
 			65 00 00
 		)
-		// Method begins at RVA 0x82728
+		// Method begins at RVA 0xb8500
 		// Header size: 12
 		// Code size: 128 (0x80)
 		.maxstack 1
@@ -1310,7 +1672,7 @@
 	.method private hidebysig static 
 		void ProcessObstacleAccuracy () cil managed 
 	{
-		// Method begins at RVA 0x827b4
+		// Method begins at RVA 0xb858c
 		// Header size: 1
 		// Code size: 52 (0x34)
 		.maxstack 8
@@ -1351,6 +1713,12 @@
 		// 						{
 		// 							num += player.CreatureData.CoverHitChanceBonus;
 		// 							num2 += player.CreatureData.CoverBlockChanceBonus;
+		// 						}
+		// 						Creature creature = _cacheCreatures.GetCreature(hitEvent.OwnerUid);
+		// 						if (player == creature)
+		// 						{
+		// 							num += player.Mercenary.CurseData.CoverPierceBlockResist;
+		// 							num2 += player.Mercenary.CurseData.CoverPierceBlockResist;
 		// 						}
 		// 					}
 		// 					hitEvent.WasMiss = Random.Range(1, 101) >= num;
@@ -1406,7 +1774,7 @@
 	.method private hidebysig static 
 		void ProcessCreatureAccuracy () cil managed 
 	{
-		// Method begins at RVA 0x827e9
+		// Method begins at RVA 0xb85c1
 		// Header size: 1
 		// Code size: 52 (0x34)
 		.maxstack 8
@@ -1419,12 +1787,27 @@
 		// 		}
 		// 		else
 		// 		{
-		// 			ref ProjectileRuntimeData reference = ref _cacheEntities.GetRef<ProjectileRuntimeData>(hitEvent.ProjEntityId);
-		// 			ref CollisionWithCreature reference2 = ref _cacheEntities.GetRef<CollisionWithCreature>(entity);
-		// 			Creature creature = _cacheCreatures.GetCreature(reference2.CreatureUid);
+		// 			ref Ballistic reference = ref _cacheEntities.GetRef<Ballistic>(hitEvent.ProjEntityId);
+		// 			ref ProjectileRuntimeData reference2 = ref _cacheEntities.GetRef<ProjectileRuntimeData>(hitEvent.ProjEntityId);
+		// 			ref CollisionWithCreature reference3 = ref _cacheEntities.GetRef<CollisionWithCreature>(entity);
+		// 			Creature creature = _cacheCreatures.GetCreature(reference3.CreatureUid);
 		// 			if (creature == null)
 		// 			{
 		// 				_cacheEntities.ScheduleDestroy(entity);
+		// 			}
+		// 			else if (creature.CreatureData.EffectsController.HasAnyEffect<ReflectShieldBuff>())
+		// 			{
+		// 				int num = _cacheEntities.CreateEntity();
+		// 				CellPosition hitPosition = hitEvent.HitPosition;
+		// 				CellPosition initialPosition = reference.InitialPosition;
+		// 				Vector2 vector = _cacheMapRenderer.CoordsToPositionCenterPivot(hitPosition);
+		// 				Ballistic comp = BallisticSystem.CreateBallistic(_cacheMapGrid, hitPosition, initialPosition, vector, reference2.Speed, 0f, reference.MaxDistance, 0, isPreciseTarget: true);
+		// 				comp.OwnerUid = hitEvent.OwnerUid;
+		// 				_cacheEntities.Add(num, comp);
+		// 				_cacheEntities.Add(num, reference2);
+		// 				ProjectileView bullet = (Data.Projectiles.GetRecord(SharedStringIds.Get(reference2.ProjectileId)).ContentDescriptor as ProjectileDescriptor).Bullet;
+		// 				SingletonMonoBehaviour<BulletFactory>.Instance.SpawnBullet(vector, hitPosition, bullet, num);
+		// 				_cacheEntities.ScheduleDestroy(hitEvent.ProjEntityId);
 		// 			}
 		// 			else
 		// 			{
@@ -1432,10 +1815,10 @@
 		// 				hitEvent.CreatureTargetAlliance = creature.CreatureData.CreatureAlliance;
 		// 				hitEvent.TargetNameTagId = SharedStringIds.Register(creature.CreatureData.LocalizationId);
 		// 				hitEvent.TargetDodge = DamageSystem.GetProgressionDodge(creature, _cacheStatistics, _cacheDifficulty);
-		// 				float value = reference.Accuracy - hitEvent.TargetDodge;
-		// 				float num = (reference.IsMaxHitChance ? Data.Global.CapAccuracy : Mathf.Clamp(value, Data.Global.MinHitChance, Data.Global.CapAccuracy));
-		// 				float num2 = Random.Range(0f, 1f);
-		// 				hitEvent.WasMiss = num2 > num;
+		// 				float value = reference2.Accuracy - hitEvent.TargetDodge;
+		// 				float num2 = (reference2.IsMaxHitChance ? Data.Global.CapAccuracy : Mathf.Clamp(value, Data.Global.MinHitChance, Data.Global.CapAccuracy));
+		// 				float num3 = Random.Range(0f, 1f);
+		// 				hitEvent.WasMiss = num3 > num2;
 		// 				Creature creature2 = _cacheCreatures.GetCreature(hitEvent.OwnerUid);
 		// 				if (!(creature2 == null))
 		// 				{
@@ -1450,12 +1833,12 @@
 		// 					}
 		// 					else
 		// 					{
-		// 						if (reference.SuppressedAccuracy > 0f)
+		// 						if (reference2.SuppressedAccuracy > 0f)
 		// 						{
 		// 							_cacheEntities.Add(_cacheEntities.CreateEntity(), new SuppressTarget
 		// 							{
-		// 								TargetUid = reference2.CreatureUid,
-		// 								SuppressedAccuracy = reference.SuppressedAccuracy
+		// 								TargetUid = reference3.CreatureUid,
+		// 								SuppressedAccuracy = reference2.SuppressedAccuracy
 		// 							});
 		// 						}
 		// 						creature.ActivateDodgedTrigger();
@@ -1487,7 +1870,7 @@
 	.method private hidebysig static 
 		void CreateHitConsequences () cil managed 
 	{
-		// Method begins at RVA 0x8281e
+		// Method begins at RVA 0xb85f6
 		// Header size: 1
 		// Code size: 47 (0x2f)
 		.maxstack 8
@@ -1502,7 +1885,8 @@
 		// 			}
 		// 			else
 		// 			{
-		// 				ref ProjectileRuntimeData reference = ref _cacheEntities.GetRef<ProjectileRuntimeData>(hitEvent.ProjEntityId);
+		// 				ref Ballistic reference = ref _cacheEntities.GetRef<Ballistic>(hitEvent.ProjEntityId);
+		// 				ref ProjectileRuntimeData reference2 = ref _cacheEntities.GetRef<ProjectileRuntimeData>(hitEvent.ProjEntityId);
 		// 				Creature creature = _cacheCreatures.GetCreature(hitEvent.OwnerUid);
 		// 				if (creature != null)
 		// 				{
@@ -1511,42 +1895,73 @@
 		// 						int entity2 = _cacheEntities.CreateEntity();
 		// 						PropagatesNoise comp = new PropagatesNoise
 		// 						{
-		// 							NoiseType = 1,
-		// 							Position = hitEvent.PreviousPosition
+		// 							NoiseType = 2,
+		// 							Position = hitEvent.PreviousPosition,
+		// 							Radius = Data.Global.AggroGunshotRadius
 		// 						};
 		// 						_cacheEntities.Add(entity2, comp);
 		// 					}
-		// 					if (ItemTraitSystem.TryGetValue<string>(creature.CreatureData.Inventory.CurrentWeapon.Comp<WeaponComponent>().OverridenAmmo.Traits, "SExplosive", out var value))
+		// 					if (reference2.HasShrapnelExplosion)
 		// 					{
 		// 						int entity3 = _cacheEntities.CreateEntity();
-		// 						int explosionTypeId = SharedStringIds.Register(value);
 		// 						_cacheEntities.Add(entity3, new ExplosionRequest
+		// 						{
+		// 							Position = hitEvent.HitPosition,
+		// 							ExplosionTypeId = reference2.ShrapnelExplId,
+		// 							OwnerUid = hitEvent.OwnerUid
+		// 						});
+		// 					}
+		// 					if (ItemTraitSystem.TryGetValue<string>(creature.CreatureData.Inventory.CurrentWeapon.Comp<WeaponComponent>().OverridenAmmo.Traits, "SExplosive", out var value))
+		// 					{
+		// 						int entity4 = _cacheEntities.CreateEntity();
+		// 						int explosionTypeId = SharedStringIds.Register(value);
+		// 						_cacheEntities.Add(entity4, new ExplosionRequest
 		// 						{
 		// 							Position = hitEvent.HitPosition,
 		// 							ExplosionTypeId = explosionTypeId,
 		// 							OwnerUid = hitEvent.OwnerUid
 		// 						});
 		// 					}
-		// 					if (reference.ProjectileExplosionChance > 0f && reference.ProjectileExplosionChance > Random.Range(0f, 1f))
+		// 					if (reference2.ProjectileExplosionChance > 0f && reference2.ProjectileExplosionChance > Random.Range(0f, 1f))
 		// 					{
-		// 						int entity4 = _cacheEntities.CreateEntity();
-		// 						_cacheEntities.Add(entity4, new ExplosionRequest
+		// 						int entity5 = _cacheEntities.CreateEntity();
+		// 						_cacheEntities.Add(entity5, new ExplosionRequest
 		// 						{
 		// 							Position = hitEvent.HitPosition,
-		// 							ExplosionTypeId = reference.ProjectileExplosionId,
+		// 							ExplosionTypeId = reference2.ProjectileExplosionId,
 		// 							OwnerUid = hitEvent.OwnerUid
 		// 						});
+		// 					}
+		// 					if (_cacheEntities.Has<CollisionWithCreature>(entity))
+		// 					{
+		// 						ref CollisionWithCreature reference3 = ref _cacheEntities.GetRef<CollisionWithCreature>(entity);
+		// 						Creature creature2 = _cacheCreatures.GetCreature(reference3.CreatureUid);
+		// 						if (creature2 != null && creature2.CreatureData.EffectsController.HasAnyEffect<BloodMirrorBuff>())
+		// 						{
+		// 							int num = _cacheEntities.CreateEntity();
+		// 							CellPosition hitPosition = hitEvent.HitPosition;
+		// 							CellPosition initialPosition = reference.InitialPosition;
+		// 							Vector2 vector = _cacheMapRenderer.CoordsToPositionCenterPivot(hitPosition);
+		// 							Ballistic comp2 = BallisticSystem.CreateBallistic(_cacheMapGrid, hitPosition, initialPosition, vector, reference2.Speed, 0f, reference.MaxDistance, 0, isPreciseTarget: true);
+		// 							comp2.OwnerUid = hitEvent.OwnerUid;
+		// 							_cacheEntities.Add(num, comp2);
+		// 							_cacheEntities.Add(num, reference2);
+		// 							ProjectileView bullet = (Data.Projectiles.GetRecord(SharedStringIds.Get(reference2.ProjectileId)).ContentDescriptor as ProjectileDescriptor).Bullet;
+		// 							SingletonMonoBehaviour<BulletFactory>.Instance.SpawnBullet(vector, hitPosition, bullet, num);
+		// 							_cacheEntities.ScheduleDestroy(hitEvent.ProjEntityId);
+		// 						}
 		// 					}
 		// 				}
 		// 				else
 		// 				{
-		// 					int entity5 = _cacheEntities.CreateEntity();
-		// 					PropagatesNoise comp2 = new PropagatesNoise
+		// 					int entity6 = _cacheEntities.CreateEntity();
+		// 					PropagatesNoise comp3 = new PropagatesNoise
 		// 					{
-		// 						NoiseType = 1,
-		// 						Position = hitEvent.PreviousPosition
+		// 						NoiseType = 2,
+		// 						Position = hitEvent.PreviousPosition,
+		// 						Radius = Data.Global.AggroGunshotRadius
 		// 					};
-		// 					_cacheEntities.Add(entity5, comp2);
+		// 					_cacheEntities.Add(entity6, comp3);
 		// 				}
 		// 			}
 		// 		}
@@ -1573,7 +1988,7 @@
 	.method private hidebysig static 
 		void ProcessExplosion () cil managed 
 	{
-		// Method begins at RVA 0x8284e
+		// Method begins at RVA 0xb8626
 		// Header size: 1
 		// Code size: 47 (0x2f)
 		.maxstack 8
@@ -1602,6 +2017,10 @@
 		// 				visualParameters.ExpAnimator.Renderer.enabled = false;
 		// 			}
 		// 			Creature creature = _cacheCreatures.GetCreature(explosion.OwnerUid);
+		// 			if (creature == null)
+		// 			{
+		// 				return;
+		// 			}
 		// 			ExplosionEntity.ExplosionParameters parameters = record.Parameters;
 		// 			parameters.Damage = Mathf.RoundToInt((float)parameters.Damage * creature.CreatureData.GrenadeDamageMult);
 		// 			parameters.IsPlayerFire = creature is Player;
@@ -1635,7 +2054,7 @@
 	.method private hidebysig static 
 		void ProcessObstaclePierce () cil managed 
 	{
-		// Method begins at RVA 0x8287e
+		// Method begins at RVA 0xb8656
 		// Header size: 1
 		// Code size: 57 (0x39)
 		.maxstack 8
@@ -1646,10 +2065,23 @@
 		// 			if (_cacheEntities.IsAlive(hitEvent.ProjEntityId) && !hitEvent.WasMiss)
 		// 			{
 		// 				ref CollisionWithObstacle reference = ref _cacheEntities.GetRef<CollisionWithObstacle>(entity);
-		// 				float num = _cacheEntities.GetRef<ProjectileRuntimeData>(hitEvent.ProjEntityId).PierceChance - reference.PierceBlock;
+		// 				ref ProjectileRuntimeData reference2 = ref _cacheEntities.GetRef<ProjectileRuntimeData>(hitEvent.ProjEntityId);
+		// 				float num = reference2.PierceChance - reference.PierceBlock;
 		// 				hitEvent.WasPierced = reference.PierceBlock == 0f || Random.Range(0f, 1f) < num;
 		// 				if (!hitEvent.WasPierced)
 		// 				{
+		// 					if (reference2.AmmoId != 0)
+		// 					{
+		// 						string itemId = SharedStringIds.Get(reference2.AmmoId);
+		// 						MapObstacle mapObstacle = _cacheMapObstacles.Get(reference.ObstacleUid);
+		// 						if (mapObstacle != null && mapObstacle.Store != null && mapObstacle.Store.AbsorbBullets)
+		// 						{
+		// 							BasePickupItem basePickupItem = SingletonMonoBehaviour<ItemFactory>.Instance.CreateForInventory(itemId);
+		// 							basePickupItem.StackCount = 1;
+		// 							mapObstacle.Store.storage.TryPutItem(basePickupItem, CellPosition.Zero);
+		// 							mapObstacle.RefreshVisual();
+		// 						}
+		// 					}
 		// 					_cacheEntities.ScheduleDestroy(hitEvent.ProjEntityId);
 		// 				}
 		// 			}
@@ -1678,7 +2110,7 @@
 	.method private hidebysig static 
 		void ProcessCreaturePierce () cil managed 
 	{
-		// Method begins at RVA 0x828b8
+		// Method begins at RVA 0xb8690
 		// Header size: 1
 		// Code size: 57 (0x39)
 		.maxstack 8
@@ -1724,7 +2156,7 @@
 	.method private hidebysig static 
 		void CreateDamageRequest () cil managed 
 	{
-		// Method begins at RVA 0x828f2
+		// Method begins at RVA 0xb86ca
 		// Header size: 1
 		// Code size: 47 (0x2f)
 		.maxstack 8
@@ -1786,7 +2218,7 @@
 	.method private hidebysig static 
 		void TempHitEventCleaner () cil managed 
 	{
-		// Method begins at RVA 0x82922
+		// Method begins at RVA 0xb86fa
 		// Header size: 1
 		// Code size: 47 (0x2f)
 		.maxstack 8

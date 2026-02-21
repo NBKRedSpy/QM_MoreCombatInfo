@@ -46,6 +46,9 @@ Thanks!
 Source code is available on GitHub at https://github.com/NBKRedSpy/QM_MoreCombatInfo
 
 # Change Log
+## 1.5.1
+* 0.9.9 Support
+
 ## 1.5.0
 Multi version support
 
@@ -54,24 +57,3 @@ Multi version support
 
 ## 1.4.0
 * MCM Integration
-
-## 1.3.0
-* Rewrite for 0.9.5 compatibility.
-
-## 1.2.3
-* 0.9.2 Compatibility
-
-## 1.2.2
-Added the 'InvertToHit' option.
-
-## 1.2.1
-* 0.9.1 Compatibility.
-## 1.2.0
-* Changed log to be the more common To Hit and Roll format.  Effectively inverse of the game's internal rolls.
-* Overrode localization errors.  Unfortunately, this is global.
-
-## 1.1.1
-* Fixed attacker header not showing or ordered late in some cases.
-* Added brackets around hit and miss.
-* Added more dashes to attacker to find easier.
-* Fixed null reference error due to Mono not liking null forgiving operators in some cases.
