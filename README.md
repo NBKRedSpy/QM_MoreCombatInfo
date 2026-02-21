@@ -1,7 +1,10 @@
 # Quasimorph More Combat Info
 ![thumbnail icon](media/thumbnail.png)
 
-Adds the hit percentages to the combat log.  The mod can be configured to show the "inverted rolls" as older versions of this mod did.  See the [Configuration](#configuration) section.
+Adds the hit percentages to the combat log. Also suffixes damage numbers from critical hits with an exclamation point  The mod can be configured to show the "inverted rolls" as older versions of this mod did.  See the [Configuration](#configuration) section.
+
+# Critical Hit Note
+When reloading a game, critical hits in the log will no longer have the ! suffix.  This is due to how the game saves the combat log.
 
 # Docs
 
@@ -13,6 +16,7 @@ Example: `[Hit] To Hit: 30 Roll: 55 Dodge: 10`
 |To Hit|The value that the roll must be equal or higher to.
 |Roll|The random roll for the to hit.  Must be at or over the To Hit value.|
 |Dodge|The target's dodge value.  Informational|
+
 
 # Log Changes
 The start of an attack will have a '--- \<attacker name\> ---' header line.  
@@ -32,9 +36,6 @@ The hit rolls only show if the projectile crossed a creature.  So if a shot goes
 
 The accuracy and roll numbers are displayed as whole numbers, but are actually decimals.  It is possible for the display to show the same number but still miss.  Ex:  51 vs 51 when in reality it is 51.1 vs 51.3
 
-# Known Issues
-* When an attack has multiple rolls, all the rolls will be first, and then any damage will follow. 
-
 # Support Development
 If you enjoy my mods and want to buy me a coffee, check out my [Ko-Fi](https://ko-fi.com/nbkredspy71915) page.
 Thanks!
@@ -46,8 +47,12 @@ Thanks!
 Source code is available on GitHub at https://github.com/NBKRedSpy/QM_MoreCombatInfo
 
 # Change Log
-## 1.5.1
-* 0.9.9 Support
+## 1.6.2
+* Added 0.9.9 support.
+
+## 1.6.1
+* Added Critical Hit indicator on damage.
+    * Original code written by Traveler.
 
 ## 1.5.0
 Multi version support
