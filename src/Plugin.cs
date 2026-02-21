@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using MGSC;
 using MoreCombatInfo.Mcm;
+using MoreCombatInfo.Patches.CriticalHitPatches;
 using MoreCombatInfo_Bootstrap;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,12 @@ namespace MoreCombatInfo
         public Plugin(HookEvents hookEvents, bool isBeta) : base(hookEvents, isBeta)
         {
             hookEvents.AfterConfigsLoaded += AfterConfig;
+            HookEvents.AfterBootstrap += AfterBootstrap;
+        }
+
+        private void AfterBootstrap(IModContext context)
+        {
+            CriticalHitUtils.Init();
         }
 
         //[Hook(ModHookType.AfterConfigsLoaded)]

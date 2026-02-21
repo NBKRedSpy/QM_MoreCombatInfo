@@ -11,7 +11,7 @@ using UnityEngine;
 using UnityEngine.Windows;
 using static MGSC.Creature;
 
-namespace MoreCombatInfo.Patches
+namespace MoreCombatInfo.Patches.ToHitPatches
 {
     /// <summary>
     /// This is specific to melee attacks.  Handles pre-creating the combat log message to be able to rearrange

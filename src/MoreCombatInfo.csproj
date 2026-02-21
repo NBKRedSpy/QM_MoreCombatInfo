@@ -1,25 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
+		<LangVersion>latest</LangVersion>
 		<TargetFramework>net48</TargetFramework>
 		<OutputType>Library</OutputType>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<LangVersion>latest</LangVersion>
-
 	</PropertyGroup>
 	<PropertyGroup>
-		<GAME_NAME>Quasimorph</GAME_NAME>
+		<!-- Set this value to your mod's Steam Workhop ID -->
 		<SteamId>3457553183</SteamId>
 	</PropertyGroup>
 	<PropertyGroup>
+		<GAME_NAME>Quasimorph</GAME_NAME>
 		<GAME_PATH Condition="!Exists('$(GAME_PATH)')">$([MSBuild]::GetRegistryValueFromView('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App $(GAME_STEAM_ID)', 'InstallLocation', null, RegistryView.Registry64, RegistryView.Registry32))</GAME_PATH>
 		<_SteamLibraryPath>$([MSBuild]::GetRegistryValueFromView('HKEY_CURRENT_USER\SOFTWARE\Valve\Steam', 'SteamPath', null, RegistryView.Registry32))</_SteamLibraryPath>
 		<GAME_PATH Condition="!Exists('$(GAME_PATH)') AND '$(_SteamLibraryPath)' != ''">$(_SteamLibraryPath)\steamapps\common\$(GAME_NAME)</GAME_PATH>
 		<GAME_PATH Condition="!Exists('$(GAME_PATH)')">C:\Program Files\Steam\steamapps\common\$(GAME_NAME)</GAME_PATH>
 		<GAME_PATH Condition="!Exists('$(GAME_PATH)')">C:\Program Files (x86)\Steam\steamapps\common\$(GAME_NAME)</GAME_PATH>
-	</PropertyGroup>
-	<PropertyGroup>
 		<WorkshopPath>$(GAME_PATH)\..\..\workshop\content\2059170\$(SteamId)\</WorkshopPath>
 		<ManagedPath>$(GAME_PATH)\$(GAME_NAME)_Data\Managed\</ManagedPath>
+		<AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
+		<PackageFolder>$(ProjectDir)../package/</PackageFolder>
 		<MCM_PATH>$(GAME_PATH)\..\..\workshop\content\2059170\3469678797\MCM.dll</MCM_PATH>
 	</PropertyGroup>
 	<PropertyGroup>
@@ -33,6 +33,7 @@
 			<HintPath Condition="!Exists($(MCM_PATH))">./lib-stripped/MCM-stripped.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
+
 		<Reference Include="Assembly-CSharp" publicize="true">
 			<HintPath>$(Assembly-CSharpPath)</HintPath>
 			<Private>False</Private>

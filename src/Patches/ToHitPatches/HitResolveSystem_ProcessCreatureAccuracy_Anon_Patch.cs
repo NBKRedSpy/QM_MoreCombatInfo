@@ -14,7 +14,7 @@ using UnityEngine;
 using static HarmonyLib.Code;
 using Random = UnityEngine.Random;
 
-namespace MoreCombatInfo.Patches
+namespace MoreCombatInfo.Patches.ToHitPatches
 {
     /// <summary>
     /// The anonymous function in the MGSC.HitResolveSystem.ProcessCreatureAccuracy method's ForEach() call.
@@ -44,7 +44,7 @@ namespace MoreCombatInfo.Patches
         public static void SetRolls(float roll, float accuracy)
         {
             Roll = roll;
-            Accuracy = accuracy;
+            Accuracy = accuracy;    
         }
 
 
@@ -115,7 +115,7 @@ namespace MoreCombatInfo.Patches
 
             try
             {
-
+                
                 if (!HitResolveSystem._cacheEntities.IsAlive(hitEvent.ProjEntityId)) return;
 
 
@@ -123,7 +123,7 @@ namespace MoreCombatInfo.Patches
                 AttackData data = new AttackData();
 
                 ref CollisionWithCreature collision = ref HitResolveSystem._cacheEntities.GetRef<CollisionWithCreature>(entity);
-                data.Target = HitResolveSystem._cacheCreatures.GetCreature(collision.CreatureUid);
+                data.Target =  HitResolveSystem._cacheCreatures.GetCreature(collision.CreatureUid);
                 data.Attacker = HitResolveSystem._cacheCreatures.GetCreature(hitEvent.OwnerUid);
 
                 data.WasMiss = hitEvent.WasMiss;
