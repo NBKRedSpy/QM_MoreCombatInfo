@@ -9,6 +9,7 @@ using System.Reflection.Emit;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
+using TranspileUtilities;
 using UnityEngine;
 using static HarmonyLib.Code;
 using Random = UnityEngine.Random;
@@ -43,7 +44,7 @@ namespace MoreCombatInfo.Patches.ToHitPatches
         public static void SetRolls(float roll, float accuracy)
         {
             Roll = roll;
-            Accuracy = accuracy;
+            Accuracy = accuracy;    
         }
 
 
@@ -56,6 +57,9 @@ namespace MoreCombatInfo.Patches.ToHitPatches
         {
 
             List<CodeInstruction> original = instructions.ToList();
+            StackVariableInstruction toHitRollLocal = null;
+            StackVariableInstruction toHitLocal = null;
+
 
             //Utils.LogIL(original, @"C:/work/s.il");
 
@@ -63,15 +67,15 @@ namespace MoreCombatInfo.Patches.ToHitPatches
                 //  hitEvent.WasMiss = num2 > num;
                 //  IL_00f4: ldarg.2
                 //  IL_00f5: ldloc.s 5
-                //  IL_00f7: ldloc.s 4
+                //  IL_00f7: ldloc.s 6
                 //  IL_00f9: cgt
                 //  IL_00fb: stfld bool MGSC.HitEvent::WasMiss
                 //// Creature creature2 = _cacheCreatures.GetCreature(hitEvent.OwnerUid);
                 //  IL_0100: ldsfld class MGSC.Creatures MGSC.HitResolveSystem::_cacheCreatures
                 .MatchEndForward(
                     new CodeMatch(OpCodes.Ldarg_2),
-                    new CodeMatch(OpCodes.Ldloc_S), // num2
-                    new CodeMatch(OpCodes.Ldloc_S), // num
+                    new CodeMatch( x => StackVariableInstruction.Create(false, x, out toHitRollLocal)),
+                    new CodeMatch(x => StackVariableInstruction.Create(false, x, out toHitLocal)),
                     new CodeMatch(OpCodes.Cgt),
                     new CodeMatch(OpCodes.Stfld, AccessTools.Field(typeof(HitEvent), "WasMiss")),
                     new CodeMatch(OpCodes.Ldsfld, AccessTools.Field(typeof(HitResolveSystem), "_cacheCreatures"))
@@ -79,8 +83,8 @@ namespace MoreCombatInfo.Patches.ToHitPatches
                 .ThrowIfNotMatch("Did not find miss evaluation block (WasMiss assignment).")
                 // Insert before ldsfld _cacheCreatures: SetRolls(num2, num)
                 .InsertAndAdvance(
-                    new CodeInstruction(OpCodes.Ldloc_S, 5), // roll = num2
-                    new CodeInstruction(OpCodes.Ldloc_S, 4), // accuracy = num
+                    toHitRollLocal.Load,
+                    toHitLocal.Load,
                     CodeInstruction.Call(() => SetRolls(0f, 0f))
                 )
                 .InstructionEnumeration()
@@ -111,7 +115,7 @@ namespace MoreCombatInfo.Patches.ToHitPatches
 
             try
             {
-
+                
                 if (!HitResolveSystem._cacheEntities.IsAlive(hitEvent.ProjEntityId)) return;
 
 
@@ -119,7 +123,7 @@ namespace MoreCombatInfo.Patches.ToHitPatches
                 AttackData data = new AttackData();
 
                 ref CollisionWithCreature collision = ref HitResolveSystem._cacheEntities.GetRef<CollisionWithCreature>(entity);
-                data.Target = HitResolveSystem._cacheCreatures.GetCreature(collision.CreatureUid);
+                data.Target =  HitResolveSystem._cacheCreatures.GetCreature(collision.CreatureUid);
                 data.Attacker = HitResolveSystem._cacheCreatures.GetCreature(hitEvent.OwnerUid);
 
                 data.WasMiss = hitEvent.WasMiss;

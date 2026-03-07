@@ -25,7 +25,8 @@ namespace MoreCombatInfo.Patches.ToHitPatches
 
         static IEnumerable<MethodBase> TargetMethods()
         {
-            //Harmony Tool NOTE: Multiple targets. Player.ProcessMeleeAttackOnEnemy and Monster.ProcessMeleeAttackOnEnemy
+            //!!! Harmony Tool NOTE: Multiple targets. Player.ProcessMeleeAttackOnEnemy and Monster.ProcessMeleeAttackOnEnemy
+            // Unfortunately this requires the TargetMethods due to the out parameter
 
             yield return AccessTools.Method(typeof(Player), nameof(Player.ProcessMeleeAttackOnEnemy),
                 new Type[] { typeof(Creature), typeof(DamageHitInfo).MakeByRefType(), typeof(MeleeAttackInput), typeof(BasePickupItem) });

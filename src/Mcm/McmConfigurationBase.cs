@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using MGSC;
 using ModConfigMenu;
+using ModConfigMenu.Contracts;
 using ModConfigMenu.Objects;
 using System;
 using System.CodeDom;
